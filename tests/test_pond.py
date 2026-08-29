@@ -10,7 +10,8 @@ def test_dashboard_ui_html():
     assert resp.status_code == 200
     assert "text/html" in resp.headers["content-type"]
     assert "YC Launch Monitor" in resp.text
-    assert "Rho GTM Radar" in resp.text
+    assert "Executive GTM Dashboard" in resp.text
+    assert "Ajimati" in resp.text
 
 def test_api_stats_and_launches():
     stats_resp = client.get("/api/stats")

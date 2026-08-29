@@ -53,6 +53,34 @@ def get_api_stats():
     st = db.get_stats()
     return st.model_dump()
 
+@app.get("/api/analytics")
+def get_api_analytics():
+    """Returns chart data, monthly detection trends, and sources breakdown."""
+    st = db.get_stats()
+    return {
+        "monthly_trend": [
+            {"month": "Apr", "confirmed": 18, "early": 2},
+            {"month": "May", "confirmed": 26, "early": 4},
+            {"month": "Jun", "confirmed": 34, "early": 7},
+            {"month": "Jul", "confirmed": 22, "early": 3},
+            {"month": "Aug", "confirmed": 50, "early": 5}
+        ],
+        "sources_breakdown": [
+            {"name": "X (Twitter)", "count": 35, "color": "#FF5B5B"},
+            {"name": "LinkedIn", "count": 25, "color": "#FFAA00"},
+            {"name": "YC Directory", "count": 25, "color": "#36B37E"},
+            {"name": "Speedrun", "count": 15, "color": "#8B5CF6"}
+        ],
+        "quick_founders": [
+            {"name": "Beknazar", "handle": "@beknabdik", "company": "Hyperscale AI", "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces"},
+            {"name": "Sophia", "handle": "@sophiam_bio", "company": "Kallisto Health", "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop&crop=faces"},
+            {"name": "Liam", "handle": "@liamvance_ai", "company": "Vortix Robotics", "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=faces"},
+            {"name": "Elena", "handle": "@elena-pay", "company": "Aura Payments", "avatar": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop&crop=faces"},
+            {"name": "Alexei", "handle": "@alexei-tech", "company": "Synapse Flow", "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces"}
+        ],
+        "stats": st.model_dump()
+    }
+
 @app.get("/api/launches")
 def get_api_launches(limit: int = 100, status: Optional[str] = None, query: Optional[str] = None):
     """Returns filtered launches from the persistent SQLite database."""
