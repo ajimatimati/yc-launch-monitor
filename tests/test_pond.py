@@ -40,6 +40,13 @@ def test_pond_health_check():
     assert "components" in data
     assert data["components"]["database"]["status"] == "up"
 
+def test_pond_task_endpoint():
+    resp = client.get("/tasks/task_12345")
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data.get("status") == "completed"
+    assert data.get("task_id") == "task_12345"
+
 def test_pond_run_unauthorized():
     body = {
         "run_id": "run_test_unauth",

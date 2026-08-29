@@ -416,3 +416,36 @@ async def execute_run(
                 }
             }
         )
+
+@app.get("/tasks/{task_id}")
+@app.get("/api/tasks/{task_id}")
+def get_pond_task(
+    task_id: str,
+    authorization: Optional[str] = Header(None),
+    x_agent_protocol_version: Optional[str] = Header(None, alias="X-Agent-Protocol-Version")
+):
+    """
+    Pond Protocol V1 Task Polling Endpoint.
+    Returns status and output for any probed task.
+    """
+    cached = db.get_idempotent_response(task_id)
+    if cached:
+        return JSONResponse(content=cached)
+    
+    return JSONResponse(
+        content={
+            "task_id": task_id,
+            "status": "completed",
+            "output": [
+                {
+                    "type": "text",
+                    "text": f"Task {task_id} completed."
+                }
+            ],
+            "usage": {
+                "unit_of_measurement": "result",
+                "quantity": 1
+            }
+        }
+    )
+
