@@ -5,14 +5,14 @@ from pathlib import Path
 from typing import Dict, Any, Optional
 
 from fastapi import FastAPI, Request, Response, Header, HTTPException, status
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from ..config import settings
 from ..database import db
 from ..engine import monitor_engine
 from ..slack.notifier import slack_notifier
-from ..models import LaunchStatus
+from ..models import LaunchStatus, LaunchItem, ProgramType, LaunchSource, FounderInfo
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 START_TIME = datetime.datetime.now(datetime.timezone.utc)
 
 app = FastAPI(
-    title="YC Launch Monitor - Pond Protocol V1 Agent",
+    title="YC Launch Monitor - Pond Protocol V1 Agent & GTM Radar",
     description="Pond Agent Server for real-time YC and Speedrun launch tracking and Slack alerting.",
     version="1.0.0"
 )
@@ -32,6 +32,65 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+def load_dashboard_html() -> str:
+    """Loads the executive GTM Dashboard HTML template."""
+    tmpl_path = Path(__file__).resolve().parent.parent / "templates" / "dashboard.html"
+    if tmpl_path.exists():
+        with open(tmpl_path, "r", encoding="utf-8") as f:
+            return f.read()
+    return "<h1>YC Launch Monitor Dashboard</h1>"
+
+@app.get("/", response_class=HTMLResponse)
+@app.get("/dashboard", response_class=HTMLResponse)
+def get_dashboard():
+    """Renders the interactive Executive GTM Radar Web Dashboard."""
+    return HTMLResponse(content=load_dashboard_html())
+
+@app.get("/api/stats")
+def get_api_stats():
+    """Returns real-time database and monitoring statistics."""
+    st = db.get_stats()
+    return st.model_dump()
+
+@app.get("/api/launches")
+def get_api_launches(limit: int = 100, status: Optional[str] = None, query: Optional[str] = None):
+    """Returns filtered launches from the persistent SQLite database."""
+    status_filter = None
+    if status == "early" or status == "EARLY_SIGNAL":
+        status_filter = LaunchStatus.EARLY_SIGNAL
+    elif status == "confirmed" or status == "CONFIRMED":
+        status_filter = LaunchStatus.CONFIRMED
+
+    items = db.list_launches(limit=limit, status=status_filter, query=query)
+    return [itm.model_dump() for itm in items]
+
+@app.post("/api/scan")
+def post_api_scan():
+    """Triggers an immediate incremental scan across all 4 sources."""
+    summary = monitor_engine.run_scan(send_slack=True)
+    return summary.model_dump()
+
+@app.post("/api/test-slack")
+def post_api_test_slack():
+    """Dispatches test alert cards to Slack (or terminal preview)."""
+    now = datetime.datetime.now(datetime.timezone.utc)
+    early_test = LaunchItem(
+        id="api_test_early",
+        company_name="Hyperscale AI",
+        slug="hyperscale-ai",
+        website="https://hyperscale.ai",
+        batch="YC S26",
+        program_type=ProgramType.YC,
+        source=LaunchSource.X_TWITTER,
+        status=LaunchStatus.EARLY_SIGNAL,
+        founders=[FounderInfo(name="Beknazar Abdikamalov", handle="@beknabdik", profile_url="https://x.com/beknabdik")],
+        post_text="We got into YC S26! Excited to move to SF and start building the future of database performance.",
+        post_url="https://x.com/beknabdik/status/2061493360150601738",
+        detected_at=now
+    )
+    s, ts = slack_notifier.send_launch_alert(early_test)
+    return {"success": s, "ts": ts}
 
 def load_manifest() -> Dict[str, Any]:
     """Loads the Pond Protocol V1 manifest."""

@@ -5,6 +5,22 @@ from yc_launch_monitor.config import settings
 
 client = TestClient(app)
 
+def test_dashboard_ui_html():
+    resp = client.get("/")
+    assert resp.status_code == 200
+    assert "text/html" in resp.headers["content-type"]
+    assert "YC Launch Monitor" in resp.text
+    assert "Rho GTM Radar" in resp.text
+
+def test_api_stats_and_launches():
+    stats_resp = client.get("/api/stats")
+    assert stats_resp.status_code == 200
+    assert "total_tracked_companies" in stats_resp.json()
+
+    launches_resp = client.get("/api/launches?limit=10")
+    assert launches_resp.status_code == 200
+    assert isinstance(launches_resp.json(), list)
+
 def test_pond_manifest_public():
     resp = client.get("/manifest")
     assert resp.status_code == 200
