@@ -1,0 +1,121 @@
+{
+  "protocol": "marketplace-agent",
+  "protocol_version": "1.0",
+  "agent_version": "1.0.0",
+  "metadata": {
+    "name": "YC & Speedrun Launch Monitor Agent",
+    "logo_url": "https://bookface-static.ycombinator.com/assets/ycdc/favicon-c8a914eeeba9fe6f7a863b35608b55aeedd7c1ff409c97b9ecb96b7a6c278d70.ico",
+    "short_description": "Monitors YC Directory, Speedrun, X/Twitter, and LinkedIn for early founder launch signals & official batch additions with Slack alerts.",
+    "description": "<p>A high-speed GTM pipeline intelligence agent. Continuously monitors Y Combinator and Speedrun startup launches across social channels and official directories. Specifically detects early founder announcements on X and LinkedIn before official directory publication.</p>",
+    "category": "sales",
+    "demo_materials": [
+      {
+        "url": "https://raw.githubusercontent.com/ajimatimati/yc-launch-monitor/main/docs/early_signal_preview.png",
+        "file_type": "image",
+        "file_name": "early_signal_preview.png"
+      }
+    ],
+    "key_features": "<ul><li>Continuous 4-source monitoring (YC Directory, Speedrun, X/Twitter, LinkedIn)</li><li>Early founder signal detection before official YC social/directory announcement</li><li>Persistent stateful SQLite deduplication engine (8-hour cadence)</li><li>Interactive Slack Block Kit alert delivery with outreach actions</li><li>Automated status and health monitoring API</li></ul>",
+    "use_cases": "<p>Empower GTM and BD teams at fintechs, banks, and dev-tool companies to connect with high-potential YC and Speedrun founders before competitors.</p>",
+    "setup_instructions": "Configure your SLACK_BOT_TOKEN and target SLACK_CHANNEL_ID in environment variables, then submit your Pond Access Key.",
+    "developer_x_url": "https://x.com/ajimatimati",
+    "developer_linkedin_url": "https://www.linkedin.com/in/ajimatimati",
+    "github_url": "https://github.com/ajimatimati/yc-launch-monitor",
+    "faqs": [
+      {
+        "question": "How does early founder detection work?",
+        "answer": "<p>The agent monitors social data streams from X and LinkedIn for verified founder announcements mentioning acceptance into YC or Speedrun before YC lists them in their public directory.</p>"
+      },
+      {
+        "question": "Does it avoid duplicate alerts?",
+        "answer": "<p>Yes. The agent maintains a persistent SQLite database tracking all seen launches, transition states, and post IDs across continuous polling cycles.</p>"
+      }
+    ],
+    "pricing_plans": [
+      {
+        "name": "Community Plan",
+        "pricing_model": "free",
+        "amount_minor": 0,
+        "usage_unit": "result",
+        "included_units": 10000,
+        "validity_days": 0,
+        "description": "Free continuous monitoring and Slack alert dispatching.",
+        "sort_order": 1
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "check_new_launches",
+      "name": "Check New Launches",
+      "description": "Executes an immediate incremental scan across all 4 sources and returns newly detected early signals and confirmed launches.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "sources": {
+            "type": "array",
+            "description": "Specific sources to scan (optional). If empty, all 4 sources are scanned.",
+            "items": {
+              "type": "string",
+              "enum": ["yc_directory", "speedrun_directory", "x_twitter", "linkedin"]
+            }
+          },
+          "send_slack_alerts": {
+            "type": "boolean",
+            "description": "Whether to send formatted Block Kit alerts to the configured Slack channel for newly found items."
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "search_yc_companies",
+      "name": "Search Monitored Companies",
+      "description": "Searches the persistent database for companies, founders, or batches.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Keyword, company name, founder handle, or batch to search.",
+            "minLength": 1
+          },
+          "status_filter": {
+            "type": "string",
+            "description": "Filter by status.",
+            "enum": ["all", "early_signal", "confirmed"]
+          }
+        },
+        "required": ["query"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "get_monitor_status",
+      "name": "Get Monitor Health & Stats",
+      "description": "Retrieves current daemon uptime, total tracked companies, early detection count, and last scan timestamps.",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      }
+    }
+  ],
+  "capabilities": {
+    "sync": true,
+    "streaming": false,
+    "async_tasks": false,
+    "cancellation": false,
+    "attachments": false,
+    "feedback": false
+  },
+  "input_modes": ["text/plain", "application/json"],
+  "output_modes": ["text/markdown", "application/json"],
+  "limits": {
+    "max_request_bytes": 10485760,
+    "max_attachment_bytes": 52428800,
+    "max_run_seconds": 300
+  }
+}
