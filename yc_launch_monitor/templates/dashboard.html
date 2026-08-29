@@ -47,25 +47,8 @@
         .font-mono {
             font-family: 'JetBrains Mono', monospace;
         }
-        
-        /* 3D Holographic Iridescent Gradient Card */
-        .iridescent-mesh {
-            background: linear-gradient(135deg, #FFD1C4 0%, #FDC3E0 30%, #D8B5FF 70%, #96E6A1 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        .iridescent-mesh::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 60%);
-            mix-blend-mode: overlay;
-        }
 
-        /* Virtual Rho Titanium Card */
+        /* Virtual Rho Titanium GTM Card */
         .rho-titanium-card {
             background: linear-gradient(135deg, #FFD1C4 0%, #D4C1EC 50%, #BFE9FF 100%);
             box-shadow: 0 15px 35px -5px rgba(180, 150, 210, 0.35);
@@ -105,21 +88,21 @@
                     <span class="font-extrabold text-slate-900 tracking-tight text-sm uppercase">RADAR</span>
                 </div>
 
-                <!-- Navigation Pills -->
+                <!-- Navigation Pills (With Active State Synchronization) -->
                 <nav class="hidden md:flex items-center gap-1.5 bg-[#F1F5F9] p-1 rounded-full border border-slate-200/70">
-                    <button onclick="switchView('dashboard')" id="nav-dashboard" class="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-darkPill text-white shadow-sm transition-all">
+                    <button onclick="setAppView('all')" id="nav-all" class="nav-pill flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-darkPill text-white shadow-sm transition-all">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                         <span>Dashboard</span>
                     </button>
-                    <button onclick="switchView('early')" id="nav-early" class="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all">
+                    <button onclick="setAppView('early')" id="nav-early" class="nav-pill flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all">
                         <svg class="w-3.5 h-3.5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"/></svg>
                         <span>Early Signals</span>
                     </button>
-                    <button onclick="switchView('yc')" id="nav-yc" class="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all">
+                    <button onclick="setAppView('yc')" id="nav-yc" class="nav-pill flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all">
                         <svg class="w-3.5 h-3.5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                         <span>YC Directory</span>
                     </button>
-                    <button onclick="switchView('speedrun')" id="nav-speedrun" class="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all">
+                    <button onclick="setAppView('speedrun')" id="nav-speedrun" class="nav-pill flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all">
                         <svg class="w-3.5 h-3.5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.63 8.41m5.96 5.96l-5.96-5.96m0 0a6 6 0 00-7.38 5.84h4.8"/></svg>
                         <span>Speedrun</span>
                     </button>
@@ -149,7 +132,7 @@
                 <!-- Bell Notification Badge -->
                 <button onclick="triggerScan()" title="Trigger Incremental Scan" class="relative p-2 rounded-full bg-[#F1F5F9] hover:bg-slate-200 border border-slate-200/80 text-slate-700 transition-all">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-                    <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                    <span id="badge-count" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                         5
                     </span>
                 </button>
@@ -223,7 +206,7 @@
                     
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Signals Radar</span>
-                        <span class="text-slate-400 hover:text-slate-600 cursor-pointer">
+                        <span onclick="resetFilters()" class="text-slate-400 hover:text-slate-600 cursor-pointer">
                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </span>
                     </div>
@@ -239,9 +222,9 @@
 
                         <!-- Floating Tab Switcher on Hero -->
                         <div class="absolute bottom-2 bg-white/95 backdrop-blur-md px-2 py-1 rounded-full border border-slate-200/80 flex items-center gap-1 text-[10px] font-bold text-slate-700 shadow-sm">
-                            <button onclick="setStatusFilter('all')" class="px-2 py-0.5 rounded-full bg-darkPill text-white">General</button>
-                            <button onclick="setStatusFilter('early')" class="px-2 py-0.5 rounded-full hover:bg-slate-100 text-orange-600">Early</button>
-                            <button onclick="setStatusFilter('confirmed')" class="px-2 py-0.5 rounded-full hover:bg-slate-100 text-emerald-600">Confirmed</button>
+                            <button onclick="setAppView('all')" id="hero-tab-all" class="hero-tab-pill px-2.5 py-0.5 rounded-full bg-darkPill text-white transition-all">General</button>
+                            <button onclick="setAppView('early')" id="hero-tab-early" class="hero-tab-pill px-2.5 py-0.5 rounded-full text-slate-600 hover:bg-slate-100 transition-all">Early</button>
+                            <button onclick="setAppView('yc')" id="hero-tab-yc" class="hero-tab-pill px-2.5 py-0.5 rounded-full text-slate-600 hover:bg-slate-100 transition-all">Confirmed</button>
                         </div>
                     </div>
 
@@ -327,10 +310,10 @@
 
                     <!-- Period Filter Pills -->
                     <div class="flex items-center justify-between bg-[#F8FAFC] p-1 rounded-full border border-slate-200/70 mb-4 text-[10px] font-semibold text-slate-500">
-                        <button class="px-3 py-1 rounded-full bg-darkPill text-white">Day</button>
-                        <button class="px-3 py-1 rounded-full hover:text-slate-900">Week</button>
-                        <button class="px-3 py-1 rounded-full hover:text-slate-900">Month</button>
-                        <button class="px-3 py-1 rounded-full hover:text-slate-900">Batch</button>
+                        <button onclick="setAppView('all')" class="px-3 py-1 rounded-full bg-darkPill text-white">All Streams</button>
+                        <button onclick="setAppView('early')" class="px-3 py-1 rounded-full hover:text-slate-900">X & LinkedIn</button>
+                        <button onclick="setAppView('yc')" class="px-3 py-1 rounded-full hover:text-slate-900">YC Index</button>
+                        <button onclick="setAppView('speedrun')" class="px-3 py-1 rounded-full hover:text-slate-900">Speedrun</button>
                     </div>
 
                     <!-- Doughnut Canvas + Legend Grid -->
@@ -339,22 +322,22 @@
                             <canvas id="donutChart"></canvas>
                         </div>
                         
-                        <div class="space-y-1.5 text-xs flex-1">
+                        <div class="space-y-1.5 text-xs flex-1" id="sources-legend-list">
                             <div class="flex items-center justify-between">
                                 <span class="flex items-center gap-1.5 text-slate-600 font-medium text-[11px]"><span class="w-2 h-2 rounded-full bg-[#FF5B5B]"></span> X (Twitter)</span>
-                                <span class="font-bold text-slate-800 text-xs">35%</span>
+                                <span id="stat-x-count" class="font-bold text-slate-800 text-xs">3 items</span>
                             </div>
                             <div class="flex items-center justify-between">
                                 <span class="flex items-center gap-1.5 text-slate-600 font-medium text-[11px]"><span class="w-2 h-2 rounded-full bg-[#FFAA00]"></span> LinkedIn</span>
-                                <span class="font-bold text-slate-800 text-xs">25%</span>
+                                <span id="stat-li-count" class="font-bold text-slate-800 text-xs">2 items</span>
                             </div>
                             <div class="flex items-center justify-between">
                                 <span class="flex items-center gap-1.5 text-slate-600 font-medium text-[11px]"><span class="w-2 h-2 rounded-full bg-[#36B37E]"></span> YC Directory</span>
-                                <span class="font-bold text-slate-800 text-xs">25%</span>
+                                <span id="stat-yc-count" class="font-bold text-slate-800 text-xs">53 items</span>
                             </div>
                             <div class="flex items-center justify-between">
                                 <span class="flex items-center gap-1.5 text-slate-600 font-medium text-[11px]"><span class="w-2 h-2 rounded-full bg-[#8B5CF6]"></span> Speedrun</span>
-                                <span class="font-bold text-slate-800 text-xs">15%</span>
+                                <span id="stat-sr-count" class="font-bold text-slate-800 text-xs">52 items</span>
                             </div>
                         </div>
                     </div>
@@ -378,37 +361,37 @@
             </div>
 
             <!-- ========================================================= -->
-            <!-- COLUMN 3 (Right, 4 Cols): Rho Card, Quick Founders, Feed  -->
+            <!-- COLUMN 3 (Right, 4 Cols): Rho GTM Radar Card, Founders, Feed -->
             <!-- ========================================================= -->
             <div class="lg:col-span-4 space-y-6">
 
-                <!-- 1. Virtual Rho Titanium GTM Card -->
+                <!-- 1. Real-World Rho GTM Intelligence Card -->
                 <div>
                     <div class="rho-titanium-card rounded-3xl p-5 text-slate-900 relative shadow-card overflow-hidden">
                         
                         <!-- Top Card Brand -->
                         <div class="flex items-center justify-between">
-                            <span class="text-xs font-extrabold uppercase tracking-widest text-slate-800">RHO TITANIUM</span>
-                            <span class="font-bold text-sm tracking-wider text-slate-700">VISA</span>
+                            <span class="text-xs font-extrabold uppercase tracking-widest text-slate-800">RHO GTM RADAR</span>
+                            <span class="font-bold text-[11px] px-2 py-0.5 rounded-full bg-black/10 text-slate-900 font-mono tracking-wider">LIVE STREAM</span>
                         </div>
 
                         <!-- Card Metric -->
-                        <div class="my-5">
-                            <p class="text-[11px] font-semibold text-slate-600 uppercase tracking-wide">Live Pipeline</p>
-                            <h3 class="text-2xl font-black text-slate-900 tracking-tight">105 Startups</h3>
+                        <div class="my-4">
+                            <p class="text-[11px] font-semibold text-slate-600 uppercase tracking-wide">Monitored Cohorts</p>
+                            <h3 class="text-xl font-black text-slate-900 tracking-tight">YC S26 | Fall 2026 | SR006</h3>
                         </div>
 
                         <!-- Card Footer -->
-                        <div class="flex items-center justify-between text-xs font-mono font-bold text-slate-700">
-                            <span>•••• 5688</span>
-                            <span>08/29</span>
+                        <div class="flex items-center justify-between text-xs font-mono font-bold text-slate-700 pt-2 border-t border-black/10">
+                            <span>5 Early Signals</span>
+                            <span>8h Polling Interval</span>
                         </div>
                     </div>
 
                     <!-- Connect Slack Button -->
                     <button onclick="sendTestSlack()" class="w-full mt-3 py-2.5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200/80 text-xs font-bold text-slate-700 shadow-sm transition-all flex items-center justify-center gap-1.5">
-                        <span>+</span>
-                        <span>Connect Slack Channel</span>
+                        <svg class="w-3.5 h-3.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        <span>Dispatch Test Slack Alert</span>
                     </button>
                 </div>
 
@@ -416,40 +399,15 @@
                 <div class="bg-white rounded-3xl p-5 shadow-soft border border-slate-100">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs font-bold text-slate-800">Quick Outreach</span>
-                        <span class="text-[10px] text-orange-600 font-bold uppercase">5 Early</span>
+                        <span class="text-[10px] text-orange-600 font-bold uppercase">5 Early Signals</span>
                     </div>
 
-                    <!-- Avatars Bubble Row -->
-                    <div class="flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar">
+                    <!-- Avatars Bubble Row (Dynamically populated) -->
+                    <div id="quick-founders-row" class="flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar">
                         <!-- Add Button -->
                         <button onclick="triggerScan()" title="Find More Founders" class="w-10 h-10 rounded-full border-2 border-dashed border-slate-300 hover:border-slate-500 flex items-center justify-center text-slate-400 hover:text-slate-700 flex-shrink-0 text-base font-bold transition-all">
                             +
                         </button>
-                        
-                        <!-- Founder 1: Beknazar -->
-                        <div onclick="openFounderPitch('Beknazar Abdikamalov', 'Hyperscale AI', 'YC S26', 'We got into YC S26! Moving to SF to build AI database optimization.')" title="Beknazar (@beknabdik) | Hyperscale AI" class="w-10 h-10 rounded-full overflow-hidden border-2 border-orange-400 hover:scale-110 flex-shrink-0 cursor-pointer shadow-sm transition-all">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces" class="w-full h-full object-cover">
-                        </div>
-
-                        <!-- Founder 2: Sophia -->
-                        <div onclick="openFounderPitch('Sophia Martinez', 'Kallisto Health', 'YC S26', 'Accepted into YC S26 batch for clinical trial AI.')" title="Sophia (@sophiam_bio) | Kallisto Health" class="w-10 h-10 rounded-full overflow-hidden border-2 border-orange-400 hover:scale-110 flex-shrink-0 cursor-pointer shadow-sm transition-all">
-                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop&crop=faces" class="w-full h-full object-cover">
-                        </div>
-
-                        <!-- Founder 3: Liam -->
-                        <div onclick="openFounderPitch('Liam Vance', 'Vortix Robotics', 'SR006', 'Joined a16z Speedrun SR006 cohort.')" title="Liam (@liamvance_ai) | Vortix Robotics" class="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-400 hover:scale-110 flex-shrink-0 cursor-pointer shadow-sm transition-all">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=faces" class="w-full h-full object-cover">
-                        </div>
-
-                        <!-- Founder 4: Elena -->
-                        <div onclick="openFounderPitch('Elena Rostova', 'Aura Payments', 'SR006', 'Speedrun SR006 cohort for merchant liquidity.')" title="Elena (@elena-pay) | Aura Payments" class="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-400 hover:scale-110 flex-shrink-0 cursor-pointer shadow-sm transition-all">
-                            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop&crop=faces" class="w-full h-full object-cover">
-                        </div>
-
-                        <!-- Founder 5: Alexei -->
-                        <div onclick="openFounderPitch('Alexei Romanov', 'Synapse Flow', 'YC S26', 'Accepted into YC S26 batch on LinkedIn.')" title="Alexei (@alexei-tech) | Synapse Flow" class="w-10 h-10 rounded-full overflow-hidden border-2 border-orange-400 hover:scale-110 flex-shrink-0 cursor-pointer shadow-sm transition-all">
-                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces" class="w-full h-full object-cover">
-                        </div>
                     </div>
                 </div>
 
@@ -514,17 +472,17 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button onclick="setStatusFilter('all')" id="btn-tab-all" class="tab-filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-darkPill text-white shadow-sm">
-                        All (105)
+                    <button onclick="setAppView('all')" id="btn-tab-all" class="tab-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-darkPill text-white shadow-sm transition-all">
+                        All (<span id="count-all">105</span>)
                     </button>
-                    <button onclick="setStatusFilter('early')" id="btn-tab-early" class="tab-filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-[#F1F5F9] text-slate-600 hover:text-slate-900">
-                        Early Signals (5)
+                    <button onclick="setAppView('early')" id="btn-tab-early" class="tab-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#F1F5F9] text-slate-600 hover:text-slate-900 transition-all">
+                        Early Signals (<span id="count-early">5</span>)
                     </button>
-                    <button onclick="setStatusFilter('confirmed')" id="btn-tab-confirmed" class="tab-filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-[#F1F5F9] text-slate-600 hover:text-slate-900">
-                        Confirmed (100)
+                    <button onclick="setAppView('yc')" id="btn-tab-yc" class="tab-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#F1F5F9] text-slate-600 hover:text-slate-900 transition-all">
+                        YC Directory (<span id="count-yc">53</span>)
                     </button>
-                    <button onclick="setStatusFilter('speedrun')" id="btn-tab-speedrun" class="tab-filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-[#F1F5F9] text-slate-600 hover:text-slate-900">
-                        Speedrun (52)
+                    <button onclick="setAppView('speedrun')" id="btn-tab-speedrun" class="tab-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#F1F5F9] text-slate-600 hover:text-slate-900 transition-all">
+                        Speedrun (<span id="count-speedrun">52</span>)
                     </button>
                 </div>
             </div>
@@ -606,20 +564,96 @@
         let barChartInstance = null;
         let donutChartInstance = null;
 
+        // Synchronized Navigation & Filter Controller
+        function setAppView(view) {
+            currentFilter = view;
+
+            // 1. Update Top Navbar Pills
+            document.querySelectorAll('.nav-pill').forEach(btn => {
+                btn.className = 'nav-pill flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all';
+            });
+            const activeNav = document.getElementById(`nav-${view}`);
+            if (activeNav) {
+                activeNav.className = 'nav-pill flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-darkPill text-white shadow-sm transition-all';
+            }
+
+            // 2. Update Hero Tab Pills
+            document.querySelectorAll('.hero-tab-pill').forEach(btn => {
+                btn.className = 'hero-tab-pill px-2.5 py-0.5 rounded-full text-slate-600 hover:bg-slate-100 transition-all';
+            });
+            const activeHero = document.getElementById(`hero-tab-${view}`);
+            if (activeHero) {
+                activeHero.className = 'hero-tab-pill px-2.5 py-0.5 rounded-full bg-darkPill text-white transition-all';
+            }
+
+            // 3. Update Table Filter Pills
+            document.querySelectorAll('.tab-filter-btn').forEach(btn => {
+                btn.className = 'tab-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#F1F5F9] text-slate-600 hover:text-slate-900 transition-all';
+            });
+            const activeTab = document.getElementById(`btn-tab-${view}`);
+            if (activeTab) {
+                activeTab.className = 'tab-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-darkPill text-white shadow-sm transition-all';
+            }
+
+            // 4. Filter Table & Scroll
+            filterLaunches();
+        }
+
         async function fetchAnalytics() {
             try {
                 const res = await fetch('/api/analytics');
                 const data = await res.json();
                 
                 const st = data.stats || {};
-                document.getElementById('hero-total-count').innerText = `${st.total_tracked_companies || 105} Startups`;
-                document.getElementById('hero-early-count').innerText = `${st.early_signal_count || 5} Founders`;
-                document.getElementById('hero-confirmed-count').innerText = `${st.confirmed_count || 100} Startups`;
+                const total = st.total_tracked_companies || 105;
+                const early = st.early_signal_count || 5;
+                const confirmed = st.confirmed_count || 100;
+                const speedrun = st.speedrun_count || 52;
+                const yc = st.yc_count || 53;
 
+                document.getElementById('hero-total-count').innerText = `${total} Startups`;
+                document.getElementById('hero-early-count').innerText = `${early} Founders`;
+                document.getElementById('hero-confirmed-count').innerText = `${confirmed} Startups`;
+                document.getElementById('badge-count').innerText = `${early}`;
+
+                // Update filter counts
+                document.getElementById('count-all').innerText = total;
+                document.getElementById('count-early').innerText = early;
+                document.getElementById('count-yc').innerText = yc;
+                document.getElementById('count-speedrun').innerText = speedrun;
+
+                // Update quick founder avatars
+                renderQuickFounders(data.quick_founders || []);
+
+                // Render charts
                 renderCharts(data);
             } catch (err) {
                 console.error('Failed to fetch analytics:', err);
             }
+        }
+
+        function renderQuickFounders(founders) {
+            const container = document.getElementById('quick-founders-row');
+            if (!container) return;
+
+            let html = `
+                <button onclick="triggerScan()" title="Find More Founders" class="w-10 h-10 rounded-full border-2 border-dashed border-slate-300 hover:border-slate-500 flex items-center justify-center text-slate-400 hover:text-slate-700 flex-shrink-0 text-base font-bold transition-all">
+                    +
+                </button>
+            `;
+
+            founders.forEach(f => {
+                const nameShort = f.name.split(' ')[0];
+                html += `
+                    <div onclick='openFounderPitch(${JSON.stringify(f.name)}, ${JSON.stringify(f.company)}, ${JSON.stringify(f.batch)}, ${JSON.stringify(f.snippet)})' 
+                         title="${f.name} (${f.handle}) | ${f.company}" 
+                         class="w-10 h-10 rounded-full overflow-hidden border-2 border-orange-400 hover:scale-110 flex-shrink-0 cursor-pointer shadow-sm transition-all">
+                        <img src="${f.avatar}" class="w-full h-full object-cover">
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
         }
 
         async function fetchLaunches() {
@@ -689,12 +723,19 @@
             const ctxDonut = document.getElementById('donutChart').getContext('2d');
             if (donutChartInstance) donutChartInstance.destroy();
 
+            const sources = data.sources_breakdown || [
+                {name: "X (Twitter)", count: 3},
+                {name: "LinkedIn", count: 2},
+                {name: "YC Directory", count: 53},
+                {name: "Speedrun", count: 52}
+            ];
+
             donutChartInstance = new Chart(ctxDonut, {
                 type: 'doughnut',
                 data: {
-                    labels: ['X', 'LinkedIn', 'YC Directory', 'Speedrun'],
+                    labels: sources.map(s => s.name),
                     datasets: [{
-                        data: [35, 25, 25, 15],
+                        data: sources.map(s => s.count),
                         backgroundColor: ['#FF5B5B', '#FFAA00', '#36B37E', '#8B5CF6'],
                         borderWidth: 0,
                         hoverOffset: 4
@@ -711,18 +752,6 @@
             });
         }
 
-        function setStatusFilter(filter) {
-            currentFilter = filter;
-            document.querySelectorAll('.tab-filter-btn').forEach(btn => {
-                btn.className = 'tab-filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-[#F1F5F9] text-slate-600 hover:text-slate-900 transition-colors';
-            });
-            const active = document.getElementById(`btn-tab-${filter}`);
-            if (active) {
-                active.className = 'tab-filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-darkPill text-white shadow-sm';
-            }
-            filterLaunches();
-        }
-
         function handleGlobalSearch() {
             filterLaunches();
         }
@@ -731,9 +760,10 @@
             const query = (document.getElementById('global-search').value || '').toLowerCase().trim();
 
             let filtered = allLaunches.filter(item => {
+                // View Filter Routing
                 if (currentFilter === 'early' && item.status !== 'EARLY_SIGNAL') return false;
-                if (currentFilter === 'confirmed' && item.status !== 'CONFIRMED') return false;
                 if (currentFilter === 'speedrun' && item.program_type !== 'SPEEDRUN') return false;
+                if (currentFilter === 'yc' && (item.program_type !== 'YC' || item.status !== 'CONFIRMED')) return false;
 
                 if (query) {
                     const matchName = (item.company_name || '').toLowerCase().includes(query);
@@ -755,7 +785,7 @@
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="6" class="py-10 text-center text-slate-400 font-medium">
-                            No startups match your search filter.
+                            No startups match your selected filter or search query.
                         </td>
                     </tr>
                 `;
@@ -765,8 +795,8 @@
             tbody.innerHTML = items.map(item => {
                 const isEarly = item.status === 'EARLY_SIGNAL';
                 const statusBadge = isEarly
-                    ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-orange-50 text-orange-600 border border-orange-100">Early Signal</span>`
-                    : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">Confirmed</span>`;
+                    ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-orange-50 text-orange-600 border border-orange-100"><span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span>Early Signal</span>`
+                    : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">Confirmed</span>`;
 
                 let founderStr = 'Founder Team';
                 if (item.founders && item.founders.length > 0) {
@@ -830,7 +860,6 @@
             const textarea = document.getElementById('modal-pitch-text');
             textarea.select();
             
-            // Modern and fallback copy mechanism
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(textarea.value);
             } else {
@@ -849,13 +878,8 @@
             document.getElementById('radar-section').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function switchView(view) {
-            setStatusFilter(view === 'dashboard' ? 'all' : view);
-            scrollToTable();
-        }
-
         function resetFilters() {
-            setStatusFilter('all');
+            setAppView('all');
             document.getElementById('global-search').value = '';
             filterLaunches();
         }

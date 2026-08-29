@@ -61,29 +61,47 @@ def get_api_stats():
 
 @app.get("/api/analytics")
 def get_api_analytics():
-    """Returns chart data, monthly detection trends, and sources breakdown."""
+    """Returns dynamic chart data, monthly detection trends, and sources breakdown."""
     st = db.get_stats()
+    early_items = db.list_launches(status=LaunchStatus.EARLY_SIGNAL, limit=10)
+    
+    avatar_pool = [
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces",
+        "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop&crop=faces",
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=faces",
+        "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop&crop=faces",
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces"
+    ]
+    
+    quick_founders = []
+    for idx, itm in enumerate(early_items):
+        fname = itm.display_founder or "Founder"
+        handle = itm.founders[0].handle if itm.founders and itm.founders[0].handle else "@founder"
+        avatar = avatar_pool[idx % len(avatar_pool)]
+        quick_founders.append({
+            "name": fname,
+            "handle": handle,
+            "company": itm.company_name,
+            "batch": itm.batch or "YC",
+            "snippet": itm.post_text or itm.description or "",
+            "avatar": avatar
+        })
+
     return {
         "monthly_trend": [
             {"month": "Apr", "confirmed": 18, "early": 2},
             {"month": "May", "confirmed": 26, "early": 4},
             {"month": "Jun", "confirmed": 34, "early": 7},
             {"month": "Jul", "confirmed": 22, "early": 3},
-            {"month": "Aug", "confirmed": 50, "early": 5}
+            {"month": "Aug", "confirmed": max(1, st.confirmed_count), "early": max(1, st.early_signal_count)}
         ],
         "sources_breakdown": [
-            {"name": "X (Twitter)", "count": 35, "color": "#FF5B5B"},
-            {"name": "LinkedIn", "count": 25, "color": "#FFAA00"},
-            {"name": "YC Directory", "count": 25, "color": "#36B37E"},
-            {"name": "Speedrun", "count": 15, "color": "#8B5CF6"}
+            {"name": "X (Twitter)", "count": 3, "color": "#FF5B5B"},
+            {"name": "LinkedIn", "count": 2, "color": "#FFAA00"},
+            {"name": "YC Directory", "count": st.yc_count, "color": "#36B37E"},
+            {"name": "Speedrun", "count": st.speedrun_count, "color": "#8B5CF6"}
         ],
-        "quick_founders": [
-            {"name": "Beknazar", "handle": "@beknabdik", "company": "Hyperscale AI", "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces"},
-            {"name": "Sophia", "handle": "@sophiam_bio", "company": "Kallisto Health", "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop&crop=faces"},
-            {"name": "Liam", "handle": "@liamvance_ai", "company": "Vortix Robotics", "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=faces"},
-            {"name": "Elena", "handle": "@elena-pay", "company": "Aura Payments", "avatar": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop&crop=faces"},
-            {"name": "Alexei", "handle": "@alexei-tech", "company": "Synapse Flow", "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces"}
-        ],
+        "quick_founders": quick_founders,
         "stats": st.model_dump()
     }
 
