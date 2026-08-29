@@ -17,14 +17,14 @@ class SlackBlockBuilder:
         # Header title
         if is_early:
             if is_speedrun:
-                header_text = "⚡ EARLY SPEEDRUN SIGNAL — Founder Announced Before Directory"
+                header_text = "⚡ EARLY SPEEDRUN SIGNAL: Founder Announced Before Directory"
             else:
-                header_text = "🔥 EARLY YC SIGNAL — Founder Announced Before YC"
+                header_text = "🔥 EARLY YC SIGNAL: Founder Announced Before YC"
         else:
             if is_speedrun:
                 header_text = "🚀 NEW SPEEDRUN COMPANY LAUNCH"
             else:
-                header_text = "✅ NEW YC COMPANY — CONFIRMED BY YC"
+                header_text = "✅ NEW YC COMPANY: CONFIRMED BY YC"
 
         # Format detection timestamp in PT / UTC
         dt_str = item.detected_at.strftime("%b %d, %Y, %I:%M %p UTC")

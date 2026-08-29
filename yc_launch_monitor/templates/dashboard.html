@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YC Launch Monitor — Executive GTM Dashboard</title>
+    <title>YC Launch Monitor: Executive GTM Dashboard</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN -->
@@ -67,8 +67,6 @@
 
         /* Virtual Rho Titanium Card */
         .rho-titanium-card {
-            background: linear-gradient(135deg, #FF9A8B 0%, #FF6A88 55%, #FF99AC 100%);
-            background: linear-gradient(135deg, #FBC2EB 0%, #A6C1EE 100%);
             background: linear-gradient(135deg, #FFD1C4 0%, #D4C1EC 50%, #BFE9FF 100%);
             box-shadow: 0 15px 35px -5px rgba(180, 150, 210, 0.35);
         }
@@ -88,38 +86,46 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-3 sm:p-6 lg:p-10">
 
-    <!-- Floating iPad / App Frame Container -->
+    <!-- Floating Tablet Application Container -->
     <div class="w-full max-w-[1280px] bg-[#F8FAFC] rounded-[36px] border-[8px] border-[#18181B] shadow-floating overflow-hidden flex flex-col">
 
         <!-- 1. Top Navigation Bar -->
         <header class="px-6 py-4 border-b border-[#EDF1F5] flex flex-wrap items-center justify-between gap-4 bg-white">
             
-            <!-- Left: Brand Logo & Navigation Pills -->
+            <!-- Left: Brand Logo and Navigation Pills -->
             <div class="flex items-center gap-6">
                 <!-- App Brand Badge -->
                 <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-xl bg-darkPill flex items-center justify-center text-white text-base shadow-sm">
-                        ⚡
+                    <div class="w-8 h-8 rounded-xl bg-darkPill flex items-center justify-center text-white shadow-sm">
+                        <!-- Zap SVG Icon -->
+                        <svg class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
                     </div>
                     <span class="font-extrabold text-slate-900 tracking-tight text-sm uppercase">RADAR</span>
                 </div>
 
                 <!-- Navigation Pills -->
                 <nav class="hidden md:flex items-center gap-1.5 bg-[#F1F5F9] p-1 rounded-full border border-slate-200/70">
-                    <button onclick="switchView('dashboard')" id="nav-dashboard" class="px-4 py-1.5 rounded-full text-xs font-bold bg-darkPill text-white shadow-sm transition-all">
-                        📊 Dashboard
+                    <button onclick="switchView('dashboard')" id="nav-dashboard" class="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-darkPill text-white shadow-sm transition-all">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                        <span>Dashboard</span>
                     </button>
-                    <button onclick="switchView('early')" id="nav-early" class="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all">
-                        🔥 Early Signals
+                    <button onclick="switchView('early')" id="nav-early" class="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all">
+                        <svg class="w-3.5 h-3.5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"/></svg>
+                        <span>Early Signals</span>
                     </button>
-                    <button onclick="switchView('yc')" id="nav-yc" class="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all">
-                        📙 YC Directory
+                    <button onclick="switchView('yc')" id="nav-yc" class="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all">
+                        <svg class="w-3.5 h-3.5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        <span>YC Directory</span>
                     </button>
-                    <button onclick="switchView('speedrun')" id="nav-speedrun" class="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all">
-                        🚀 Speedrun
+                    <button onclick="switchView('speedrun')" id="nav-speedrun" class="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all">
+                        <svg class="w-3.5 h-3.5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.63 8.41m5.96 5.96l-5.96-5.96m0 0a6 6 0 00-7.38 5.84h4.8"/></svg>
+                        <span>Speedrun</span>
                     </button>
-                    <a href="/manifest" target="_blank" class="px-4 py-1.5 rounded-full text-xs font-semibold text-purple-600 hover:text-purple-800 transition-all">
-                        🤖 Pond Agent
+                    <a href="/manifest" target="_blank" class="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-purple-600 hover:text-purple-800 transition-all">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="11" width="18" height="10" rx="2" stroke-width="2"/><circle cx="12" cy="5" r="2" stroke-width="2"/><path stroke-width="2" d="M12 7v4M8 16h.01M16 16h.01"/></svg>
+                        <span>Pond Agent</span>
                     </a>
                 </nav>
             </div>
@@ -128,8 +134,8 @@
             <div class="flex items-center gap-3.5">
                 <!-- Search Pill Input -->
                 <div class="relative hidden sm:block">
-                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-xs">
-                        🔍
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </span>
                     <input 
                         type="text" 
@@ -142,7 +148,7 @@
 
                 <!-- Bell Notification Badge -->
                 <button onclick="triggerScan()" title="Trigger Incremental Scan" class="relative p-2 rounded-full bg-[#F1F5F9] hover:bg-slate-200 border border-slate-200/80 text-slate-700 transition-all">
-                    <span>🔔</span>
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
                     <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                         5
                     </span>
@@ -157,7 +163,7 @@
                     >
                     <div class="hidden lg:block text-left">
                         <p class="text-xs font-bold text-slate-900 leading-tight">Jayson Fung</p>
-                        <p class="text-[10px] text-slate-500 font-medium">Senior GTM @ Rho</p>
+                        <p class="text-[10px] text-slate-500 font-medium">Senior GTM at Rho</p>
                     </div>
                 </div>
             </div>
@@ -169,28 +175,32 @@
             <!-- Left Greeting -->
             <div class="flex items-center gap-3">
                 <button onclick="resetFilters()" class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-50 shadow-sm">
-                    ←
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
                 </button>
                 <div>
                     <h1 class="text-lg font-bold text-slate-900 leading-none">Dashboard</h1>
-                    <p class="text-xs text-slate-500 font-medium mt-0.5">Hello Jayson 👋</p>
+                    <p class="text-xs text-slate-500 font-medium mt-0.5">Hello Jayson</p>
                 </div>
             </div>
 
-            <!-- Right Controls: Batch Picker & Action Pills -->
+            <!-- Right Controls: Batch Picker and Action Pills -->
             <div class="flex items-center gap-2.5">
                 <button onclick="triggerScan()" id="btn-scan" class="flex items-center gap-1.5 px-4 py-2 rounded-full bg-darkPill hover:bg-slate-800 text-white text-xs font-bold shadow-sm transition-all active:scale-95">
-                    <span id="scan-icon">⚡</span>
+                    <span id="scan-icon">
+                        <svg class="w-3.5 h-3.5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </span>
                     <span>+ Run Scan</span>
                 </button>
 
-                <button onclick="sendTestSlack()" class="px-3.5 py-2 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-xs font-semibold shadow-sm transition-all">
-                    🔔 Test Slack
+                <button onclick="sendTestSlack()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-xs font-semibold shadow-sm transition-all">
+                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                    <span>Test Slack</span>
                 </button>
 
                 <div class="flex items-center gap-1.5 px-3 py-2 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-sm">
-                    <span>📅 Aug 2026</span>
-                    <span class="text-slate-400">▾</span>
+                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <span>Aug 2026</span>
+                    <svg class="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </div>
 
                 <div class="hidden xl:flex items-center gap-2 pl-2">
@@ -208,35 +218,30 @@
             <!-- ========================================================= -->
             <div class="lg:col-span-4 space-y-6">
                 
-                <!-- Card: Signal Radar & 3D Iridescent Hologram -->
+                <!-- Card: Signal Radar and 3D Iridescent Hologram -->
                 <div class="bg-white rounded-3xl p-5 shadow-soft border border-slate-100 flex flex-col justify-between relative">
                     
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Signals Radar</span>
-                        <span class="text-slate-400 text-xs cursor-pointer">✕</span>
+                        <span class="text-slate-400 hover:text-slate-600 cursor-pointer">
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </span>
                     </div>
 
-                    <!-- 3D Iridescent Graphic Artwork -->
-                    <div class="w-full h-32 rounded-2xl iridescent-mesh relative flex items-center justify-center p-3 shadow-inner">
-                        <!-- Fluid 3D Swirl Graphic (Pure SVG) -->
-                        <svg class="w-28 h-28 drop-shadow-md animate-pulse" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="swirlGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#FF6B8B" />
-                                    <stop offset="50%" stop-color="#8E54E9" />
-                                    <stop offset="100%" stop-color="#4776E6" />
-                                </linearGradient>
-                            </defs>
-                            <path d="M100 20C144.183 20 180 55.8172 180 100C180 144.183 144.183 180 100 180C55.8172 180 20 144.183 20 100C20 55.8172 55.8172 20 100 20Z" stroke="url(#swirlGrad)" stroke-width="24" stroke-linecap="round" stroke-dasharray="180 120"/>
-                            <circle cx="100" cy="100" r="38" fill="white" fill-opacity="0.85"/>
-                            <text x="100" y="106" text-anchor="middle" font-size="20" font-weight="bold" fill="#18181B">🔥 5</text>
-                        </svg>
+                    <!-- 3D Iridescent Render Container -->
+                    <div class="w-full h-36 rounded-2xl bg-gradient-to-tr from-slate-100 to-slate-50 relative flex items-center justify-center p-2 border border-slate-100 overflow-hidden shadow-inner">
+                        <!-- High-Resolution 3D Iridescent Torus Image -->
+                        <img 
+                            src="/static/images/hero_3d_torus.jpg" 
+                            alt="3D Iridescent Swirl Asset" 
+                            class="w-32 h-32 object-contain drop-shadow-lg hover:scale-105 transition-transform duration-500"
+                        >
 
                         <!-- Floating Tab Switcher on Hero -->
-                        <div class="absolute bottom-2 bg-white/90 backdrop-blur-md px-2 py-1 rounded-full border border-white/80 flex items-center gap-1 text-[10px] font-bold text-slate-700 shadow-sm">
+                        <div class="absolute bottom-2 bg-white/95 backdrop-blur-md px-2 py-1 rounded-full border border-slate-200/80 flex items-center gap-1 text-[10px] font-bold text-slate-700 shadow-sm">
                             <button onclick="setStatusFilter('all')" class="px-2 py-0.5 rounded-full bg-darkPill text-white">General</button>
-                            <button onclick="setStatusFilter('early')" class="px-2 py-0.5 rounded-full hover:bg-slate-100">🔥 Early</button>
-                            <button onclick="setStatusFilter('confirmed')" class="px-2 py-0.5 rounded-full hover:bg-slate-100">✅ Confirmed</button>
+                            <button onclick="setStatusFilter('early')" class="px-2 py-0.5 rounded-full hover:bg-slate-100 text-orange-600">Early</button>
+                            <button onclick="setStatusFilter('confirmed')" class="px-2 py-0.5 rounded-full hover:bg-slate-100 text-emerald-600">Confirmed</button>
                         </div>
                     </div>
 
@@ -246,7 +251,7 @@
                         <div class="flex items-baseline justify-between mt-0.5">
                             <h2 id="hero-total-count" class="text-2xl font-extrabold text-slate-900">105 Startups</h2>
                             <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
-                                +5 Early 🔥
+                                +5 Early Signals
                             </span>
                         </div>
                     </div>
@@ -254,11 +259,11 @@
                     <!-- Sub Breakdown Numbers -->
                     <div class="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-slate-100 text-xs">
                         <div>
-                            <p class="text-[10px] text-slate-400 font-medium">🔥 Early Signals</p>
-                            <p id="hero-early-count" class="font-bold text-brand-orange text-sm mt-0.5">5 Founders</p>
+                            <p class="text-[10px] text-slate-400 font-medium">Early Signals</p>
+                            <p id="hero-early-count" class="font-bold text-orange-600 text-sm mt-0.5">5 Founders</p>
                         </div>
                         <div>
-                            <p class="text-[10px] text-slate-400 font-medium">✅ Confirmed YC</p>
+                            <p class="text-[10px] text-slate-400 font-medium">Confirmed YC</p>
                             <p id="hero-confirmed-count" class="font-bold text-slate-800 text-sm mt-0.5">100 Startups</p>
                         </div>
                     </div>
@@ -289,7 +294,9 @@
                         <span class="text-xs font-bold text-slate-800">Batch Outreach Target</span>
                         <div class="flex items-center gap-1 text-slate-400 text-xs">
                             <span class="cursor-pointer">•••</span>
-                            <span class="cursor-pointer ml-1">↗</span>
+                            <span class="cursor-pointer ml-1">
+                                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            </span>
                         </div>
                     </div>
 
@@ -398,7 +405,7 @@
                         </div>
                     </div>
 
-                    <!-- + Add / Connect Slack Button -->
+                    <!-- Connect Slack Button -->
                     <button onclick="sendTestSlack()" class="w-full mt-3 py-2.5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200/80 text-xs font-bold text-slate-700 shadow-sm transition-all flex items-center justify-center gap-1.5">
                         <span>+</span>
                         <span>Connect Slack Channel</span>
@@ -409,7 +416,7 @@
                 <div class="bg-white rounded-3xl p-5 shadow-soft border border-slate-100">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs font-bold text-slate-800">Quick Outreach</span>
-                        <span class="text-[10px] text-brand-orange font-bold uppercase">🔥 5 Early</span>
+                        <span class="text-[10px] text-orange-600 font-bold uppercase">5 Early</span>
                     </div>
 
                     <!-- Avatars Bubble Row -->
@@ -420,33 +427,33 @@
                         </button>
                         
                         <!-- Founder 1: Beknazar -->
-                        <div onclick="openFounderPitch('Beknazar Abdikamalov', 'Hyperscale AI', 'YC S26', 'We got into YC S26! Moving to SF to build AI database optimization.')" title="Beknazar (@beknabdik) • Hyperscale AI" class="w-10 h-10 rounded-full overflow-hidden border-2 border-brand-orange/60 hover:scale-110 flex-shrink-0 cursor-pointer shadow-sm transition-all">
+                        <div onclick="openFounderPitch('Beknazar Abdikamalov', 'Hyperscale AI', 'YC S26', 'We got into YC S26! Moving to SF to build AI database optimization.')" title="Beknazar (@beknabdik) | Hyperscale AI" class="w-10 h-10 rounded-full overflow-hidden border-2 border-orange-400 hover:scale-110 flex-shrink-0 cursor-pointer shadow-sm transition-all">
                             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces" class="w-full h-full object-cover">
                         </div>
 
                         <!-- Founder 2: Sophia -->
-                        <div onclick="openFounderPitch('Sophia Martinez', 'Kallisto Health', 'YC S26', 'Accepted into YC S26 batch for clinical trial AI.')" title="Sophia (@sophiam_bio) • Kallisto Health" class="w-10 h-10 rounded-full overflow-hidden border-2 border-brand-orange/60 hover:scale-110 flex-shrink-0 cursor-pointer shadow-sm transition-all">
+                        <div onclick="openFounderPitch('Sophia Martinez', 'Kallisto Health', 'YC S26', 'Accepted into YC S26 batch for clinical trial AI.')" title="Sophia (@sophiam_bio) | Kallisto Health" class="w-10 h-10 rounded-full overflow-hidden border-2 border-orange-400 hover:scale-110 flex-shrink-0 cursor-pointer shadow-sm transition-all">
                             <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop&crop=faces" class="w-full h-full object-cover">
                         </div>
 
                         <!-- Founder 3: Liam -->
-                        <div onclick="openFounderPitch('Liam Vance', 'Vortix Robotics', 'SR006', 'Joined a16z Speedrun SR006 cohort.')" title="Liam (@liamvance_ai) • Vortix Robotics" class="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-400 hover:scale-110 flex-shrink-0 cursor-pointer shadow-sm transition-all">
+                        <div onclick="openFounderPitch('Liam Vance', 'Vortix Robotics', 'SR006', 'Joined a16z Speedrun SR006 cohort.')" title="Liam (@liamvance_ai) | Vortix Robotics" class="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-400 hover:scale-110 flex-shrink-0 cursor-pointer shadow-sm transition-all">
                             <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=faces" class="w-full h-full object-cover">
                         </div>
 
                         <!-- Founder 4: Elena -->
-                        <div onclick="openFounderPitch('Elena Rostova', 'Aura Payments', 'SR006', 'Speedrun SR006 cohort for merchant liquidity.')" title="Elena (@elena-pay) • Aura Payments" class="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-400 hover:scale-110 flex-shrink-0 cursor-pointer shadow-sm transition-all">
+                        <div onclick="openFounderPitch('Elena Rostova', 'Aura Payments', 'SR006', 'Speedrun SR006 cohort for merchant liquidity.')" title="Elena (@elena-pay) | Aura Payments" class="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-400 hover:scale-110 flex-shrink-0 cursor-pointer shadow-sm transition-all">
                             <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop&crop=faces" class="w-full h-full object-cover">
                         </div>
 
                         <!-- Founder 5: Alexei -->
-                        <div onclick="openFounderPitch('Alexei Romanov', 'Synapse Flow', 'YC S26', 'Accepted into YC S26 batch on LinkedIn.')" title="Alexei (@alexei-tech) • Synapse Flow" class="w-10 h-10 rounded-full overflow-hidden border-2 border-brand-orange/60 hover:scale-110 flex-shrink-0 cursor-pointer shadow-sm transition-all">
+                        <div onclick="openFounderPitch('Alexei Romanov', 'Synapse Flow', 'YC S26', 'Accepted into YC S26 batch on LinkedIn.')" title="Alexei (@alexei-tech) | Synapse Flow" class="w-10 h-10 rounded-full overflow-hidden border-2 border-orange-400 hover:scale-110 flex-shrink-0 cursor-pointer shadow-sm transition-all">
                             <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces" class="w-full h-full object-cover">
                         </div>
                     </div>
                 </div>
 
-                <!-- 3. Recent Detections Feed (Like "Last Transactions") -->
+                <!-- 3. Recent Detections Feed -->
                 <div class="bg-white rounded-3xl p-5 shadow-soft border border-slate-100">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs font-bold text-slate-800">Recent Detections</span>
@@ -457,13 +464,15 @@
                         <!-- Item 1 -->
                         <div class="flex items-center justify-between text-xs">
                             <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-xl bg-black text-white flex items-center justify-center text-xs font-bold">𝕏</div>
+                                <div class="w-8 h-8 rounded-xl bg-black text-white flex items-center justify-center text-xs font-bold">
+                                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                </div>
                                 <div>
                                     <p class="font-bold text-slate-900">Hyperscale AI</p>
                                     <p class="text-[10px] text-slate-400">@beknabdik • YC S26</p>
                                 </div>
                             </div>
-                            <span class="font-bold text-brand-orange text-xs bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">🔥 Early</span>
+                            <span class="font-bold text-orange-600 text-xs bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">Early Signal</span>
                         </div>
 
                         <!-- Item 2 -->
@@ -475,7 +484,7 @@
                                     <p class="text-[10px] text-slate-400">Fall 2026 Batch</p>
                                 </div>
                             </div>
-                            <span class="font-bold text-emerald-600 text-xs bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">✅ Live</span>
+                            <span class="font-bold text-emerald-600 text-xs bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">Confirmed</span>
                         </div>
 
                         <!-- Item 3 -->
@@ -487,7 +496,7 @@
                                     <p class="text-[10px] text-slate-400">@alexei-tech • YC S26</p>
                                 </div>
                             </div>
-                            <span class="font-bold text-brand-orange text-xs bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">🔥 Early</span>
+                            <span class="font-bold text-orange-600 text-xs bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">Early Signal</span>
                         </div>
                     </div>
                 </div>
@@ -501,7 +510,7 @@
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                 <div>
                     <h3 class="font-bold text-slate-900 text-base">Startup Launch Radar</h3>
-                    <p class="text-xs text-slate-500">Live verified database of early signals & confirmed directory launches</p>
+                    <p class="text-xs text-slate-500">Live verified database of early signals and confirmed directory launches</p>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
@@ -509,13 +518,13 @@
                         All (105)
                     </button>
                     <button onclick="setStatusFilter('early')" id="btn-tab-early" class="tab-filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-[#F1F5F9] text-slate-600 hover:text-slate-900">
-                        🔥 Early Signals (5)
+                        Early Signals (5)
                     </button>
                     <button onclick="setStatusFilter('confirmed')" id="btn-tab-confirmed" class="tab-filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-[#F1F5F9] text-slate-600 hover:text-slate-900">
-                        ✅ Confirmed (100)
+                        Confirmed (100)
                     </button>
                     <button onclick="setStatusFilter('speedrun')" id="btn-tab-speedrun" class="tab-filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-[#F1F5F9] text-slate-600 hover:text-slate-900">
-                        🚀 Speedrun (52)
+                        Speedrun (52)
                     </button>
                 </div>
             </div>
@@ -529,7 +538,7 @@
                             <th class="py-3 px-3">Batch</th>
                             <th class="py-3 px-3">Status</th>
                             <th class="py-3 px-3">Source</th>
-                            <th class="py-3 px-5">Founder & Snippet</th>
+                            <th class="py-3 px-5">Founder and Snippet</th>
                             <th class="py-3 px-5 text-right">GTM Action</th>
                         </tr>
                     </thead>
@@ -544,7 +553,7 @@
 
     </div>
 
-    <!-- Designer Credit Tag (Matching @factory201.ma) -->
+    <!-- Designer Credit Tag (Author: Ajimati) -->
     <div class="text-center py-6 text-xs text-slate-500 font-semibold tracking-wide">
         @Ajimati
     </div>
@@ -554,13 +563,16 @@
         <div class="bg-white border border-slate-200 rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                    <span>⚡ Quick Rho GTM Outreach Pitch</span>
+                    <svg class="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <span>Quick Rho GTM Outreach Pitch</span>
                 </h3>
-                <button onclick="closeOutreachModal()" class="text-slate-400 hover:text-slate-700 text-lg font-bold">&times;</button>
+                <button onclick="closeOutreachModal()" class="text-slate-400 hover:text-slate-700 text-lg font-bold">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
             </div>
 
             <div>
-                <label class="block text-[11px] font-bold text-slate-500 mb-1 uppercase">Target Founder & Startup</label>
+                <label class="block text-[11px] font-bold text-slate-500 mb-1 uppercase">Target Founder and Startup</label>
                 <div id="modal-target-info" class="p-3 rounded-xl bg-slate-50 text-xs text-slate-900 font-bold border border-slate-200"></div>
             </div>
 
@@ -571,14 +583,19 @@
 
             <div class="flex items-center justify-end gap-2.5 pt-2">
                 <button onclick="closeOutreachModal()" class="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold hover:bg-slate-200">Close</button>
-                <button onclick="copyPitchText()" id="btn-copy-pitch" class="px-4 py-2 rounded-full bg-darkPill hover:bg-slate-800 text-white text-xs font-bold shadow-sm">📋 Copy to Clipboard</button>
+                <button onclick="copyPitchText()" id="btn-copy-pitch" class="flex items-center gap-1.5 px-4 py-2 rounded-full bg-darkPill hover:bg-slate-800 text-white text-xs font-bold shadow-sm">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                    <span>Copy to Clipboard</span>
+                </button>
             </div>
         </div>
     </div>
 
     <!-- Notification Toast -->
     <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-darkPill text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 text-xs font-bold">
-        <span id="toast-icon">🚀</span>
+        <span id="toast-icon">
+            <svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        </span>
         <span id="toast-message">Notification</span>
     </div>
 
@@ -594,7 +611,6 @@
                 const res = await fetch('/api/analytics');
                 const data = await res.json();
                 
-                // Update hero stats
                 const st = data.stats || {};
                 document.getElementById('hero-total-count').innerText = `${st.total_tracked_companies || 105} Startups`;
                 document.getElementById('hero-early-count').innerText = `${st.early_signal_count || 5} Founders`;
@@ -749,8 +765,8 @@
             tbody.innerHTML = items.map(item => {
                 const isEarly = item.status === 'EARLY_SIGNAL';
                 const statusBadge = isEarly
-                    ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-orange-50 text-brand-orange border border-orange-100">🔥 Early Signal</span>`
-                    : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">✅ Confirmed</span>`;
+                    ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-orange-50 text-orange-600 border border-orange-100">Early Signal</span>`
+                    : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">Confirmed</span>`;
 
                 let founderStr = 'Founder Team';
                 if (item.founders && item.founders.length > 0) {
@@ -782,7 +798,7 @@
                                 onclick='openFounderPitch(${JSON.stringify(founderStr.split(" ")[0])}, ${JSON.stringify(item.company_name)}, ${JSON.stringify(item.batch || "YC")}, ${JSON.stringify(snippet)})'
                                 class="px-3 py-1 rounded-full bg-darkPill hover:bg-slate-800 text-white font-bold text-[11px] shadow-sm transition-all"
                             >
-                                ⚡ Rho Pitch
+                                Rho Pitch
                             </button>
                         </td>
                     </tr>
@@ -791,8 +807,8 @@
         }
 
         function openFounderPitch(founder, company, batch, snippet) {
-            document.getElementById('modal-target-info').innerText = `${founder} • Founder of ${company} (${batch})`;
-            const pitch = `Hi ${founder},\n\nSaw the exciting news about ${company} and your acceptance into ${batch}! Huge congratulations.\n\nI'm Jayson Fung on the GTM team at Rho (https://rho.co). We provide high-growth YC and Speedrun founders with frictionless commercial banking, automated treasury management, and high-yield startup deposits with $0 fees.\n\nWould love to set you up with our dedicated YC founder onboarding package as you gear up for SF and growth.\n\nDo you have 5 mins for a quick chat this week?\n\nBest,\nJayson Fung\nSenior GTM Professional @ Rho\njayson@rho.co`;
+            document.getElementById('modal-target-info').innerText = `${founder} : Founder of ${company} (${batch})`;
+            const pitch = `Hi ${founder},\n\nSaw the exciting news about ${company} and your acceptance into ${batch}! Huge congratulations.\n\nI am Jayson Fung on the GTM team at Rho (https://rho.co). We provide high-growth YC and Speedrun founders with frictionless commercial banking, automated treasury management, and high-yield startup deposits with $0 fees.\n\nWould love to set you up with our dedicated YC founder onboarding package as you gear up for SF and growth.\n\nDo you have 5 mins for a quick chat this week?\n\nBest,\nJayson Fung\nSenior GTM Professional at Rho\njayson@rho.co`;
             
             document.getElementById('modal-pitch-text').value = pitch;
             document.getElementById('outreach-modal').classList.remove('hidden');
@@ -802,14 +818,31 @@
             document.getElementById('outreach-modal').classList.add('hidden');
         }
 
+        // Close modal on Escape key press or backdrop click
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeOutreachModal();
+        });
+        document.getElementById('outreach-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeOutreachModal();
+        });
+
         function copyPitchText() {
             const textarea = document.getElementById('modal-pitch-text');
             textarea.select();
-            navigator.clipboard.writeText(textarea.value);
+            
+            // Modern and fallback copy mechanism
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textarea.value);
+            } else {
+                document.execCommand('copy');
+            }
+            
             const btn = document.getElementById('btn-copy-pitch');
-            btn.innerText = '✅ Copied!';
-            setTimeout(() => { btn.innerText = '📋 Copy to Clipboard'; }, 2000);
-            showToast('Outreach pitch copied to clipboard!', '📋');
+            btn.innerHTML = '<span>Copied!</span>';
+            setTimeout(() => { 
+                btn.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg><span>Copy to Clipboard</span>';
+            }, 2000);
+            showToast('Outreach pitch copied to clipboard!');
         }
 
         function scrollToTable() {
@@ -829,38 +862,34 @@
 
         async function triggerScan() {
             const btn = document.getElementById('btn-scan');
-            const icon = document.getElementById('scan-icon');
             btn.disabled = true;
-            icon.innerText = '⏳';
-            showToast('Scanning all 4 sources for new launches...', '⚡');
+            showToast('Scanning all 4 sources for new launches...');
 
             try {
                 const res = await fetch('/api/scan', { method: 'POST' });
                 const data = await res.json();
-                showToast(`Scan complete! ${data.total_new_items} new launches (${data.total_early_signals} early signals)`, '🔥');
+                showToast(`Scan complete! ${data.total_new_items} new launches (${data.total_early_signals} early signals)`);
                 await fetchAnalytics();
                 await fetchLaunches();
             } catch (err) {
-                showToast('Scan error: ' + err.message, '⚠️');
+                showToast('Scan error: ' + err.message);
             } finally {
                 btn.disabled = false;
-                icon.innerText = '⚡';
             }
         }
 
         async function sendTestSlack() {
-            showToast('Sending formatted test cards to Slack...', '🔔');
+            showToast('Sending formatted test cards to Slack...');
             try {
                 await fetch('/api/test-slack', { method: 'POST' });
-                showToast('Slack alert cards dispatched!', '💬');
+                showToast('Slack alert cards dispatched!');
             } catch (err) {
-                showToast('Slack error: ' + err.message, '⚠️');
+                showToast('Slack error: ' + err.message);
             }
         }
 
-        function showToast(msg, icon = '🚀') {
+        function showToast(msg) {
             const toast = document.getElementById('toast');
-            document.getElementById('toast-icon').innerText = icon;
             document.getElementById('toast-message').innerText = msg;
             toast.classList.remove('translate-y-24', 'opacity-0');
             setTimeout(() => { toast.classList.add('translate-y-24', 'opacity-0'); }, 3500);

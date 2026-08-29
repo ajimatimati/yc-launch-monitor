@@ -7,6 +7,7 @@ from typing import Dict, Any, Optional
 from fastapi import FastAPI, Request, Response, Header, HTTPException, status
 from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from ..config import settings
 from ..database import db
@@ -20,7 +21,7 @@ logger = logging.getLogger(__name__)
 START_TIME = datetime.datetime.now(datetime.timezone.utc)
 
 app = FastAPI(
-    title="YC Launch Monitor - Pond Protocol V1 Agent & GTM Radar",
+    title="YC Launch Monitor: Pond Protocol V1 Agent and GTM Radar",
     description="Pond Agent Server for real-time YC and Speedrun launch tracking and Slack alerting.",
     version="1.0.0"
 )
@@ -32,6 +33,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount static assets
+STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
+STATIC_DIR.mkdir(parents=True, exist_ok=True)
+app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 def load_dashboard_html() -> str:
     """Loads the executive GTM Dashboard HTML template."""
@@ -310,7 +316,7 @@ async def execute_run(
             else:
                 for r in results:
                     badge = "🔥 Early Signal" if r.status == LaunchStatus.EARLY_SIGNAL else "✅ Confirmed"
-                    output_text += f"#### {r.company_name} (`{r.batch or 'YC'}`) — {badge}\n"
+                    output_text += f"#### {r.company_name} (`{r.batch or 'YC'}`) : {badge}\n"
                     output_text += f"- **Founder**: {r.display_founder}\n"
                     output_text += f"- **Source**: {r.source.value}\n"
                     if r.website:
