@@ -317,7 +317,53 @@ async def execute_run(
         output_text = ""
         usage_quantity = 1
 
-        if action_id == "check_new_launches":
+        if action_id == "run_agent" or action_id is None or action_id == "default":
+            prompt = params.get("prompt") or params.get("query") or body.get("prompt") or ""
+            if not prompt and body.get("messages") and len(body["messages"]) > 0:
+                parts = body["messages"][0].get("parts", [])
+                for p in parts:
+                    if p.get("type") == "text":
+                        prompt = p.get("text", "")
+            
+            p_lower = str(prompt).lower().strip()
+            
+            # Explicit fail test handler as per Pond spec
+            if p_lower == "fail":
+                return JSONResponse(content={
+                    "run_id": run_id,
+                    "status": "failed",
+                    "error": {"code": "internal_error", "message": "The Agent could not complete the request."},
+                    "usage": {"unit_of_measurement": "result", "quantity": 0}
+                })
+
+            if "scan" in p_lower or "check" in p_lower:
+                summary = monitor_engine.run_scan(send_slack=True)
+                output_text = f"### 🚀 Immediate Launch Scan Completed\n\n- Detected {summary.total_new_items} new items ({summary.total_early_signals} early signals, {summary.total_confirmed} confirmed).\n- Dispatched {summary.slack_delivered_count} alerts to Slack."
+            elif "search" in p_lower or "find" in p_lower or "lookup" in p_lower:
+                search_term = p_lower.replace("search", "").replace("find", "").replace("lookup", "").strip() or "AI"
+                results = db.list_launches(limit=5, query=search_term)
+                output_text = f"### 🔍 Search results for `{search_term}` ({len(results)} found)\n\n"
+                for r in results:
+                    badge = "🔥 Early Signal" if r.status == LaunchStatus.EARLY_SIGNAL else "✅ Confirmed"
+                    output_text += f"- **{r.company_name}** (`{r.batch or 'YC'}`) : {badge}\n  - Founder: {r.display_founder}\n\n"
+            elif "status" in p_lower or "health" in p_lower or "stats" in p_lower:
+                st = db.get_stats()
+                output_text = f"### 📊 YC Launch Radar System Status\n\n- **Status**: 🟢 Online & Healthy\n- **Total Companies Tracked**: {st.total_tracked_companies}\n- **🔥 Early Signals**: {st.early_signal_count}\n- **✅ Confirmed Listings**: {st.confirmed_count}\n- **Cadence**: 8-hour continuous polling cycle"
+            else:
+                st = db.get_stats()
+                early_items = db.list_launches(status=LaunchStatus.EARLY_SIGNAL, limit=3)
+                output_text = f"### ⚡ YC & Speedrun Launch Radar Intelligence\n\n"
+                output_text += f"Currently tracking **{st.total_tracked_companies} companies** ({st.early_signal_count} early founder signals, {st.confirmed_count} confirmed launches).\n\n"
+                if early_items:
+                    output_text += "#### 🔥 Latest Detected Early Signals:\n"
+                    for itm in early_items:
+                        output_text += f"- **{itm.company_name}** ({itm.batch or 'YC S26'}) : Founder: **{itm.display_founder}**\n"
+                        if itm.post_text:
+                            output_text += f"  > *\"{itm.post_text[:120]}...\"*\n"
+                output_text += f"\n*Prompt received:* `{prompt or 'General status check'}`"
+            usage_quantity = 1
+
+        elif action_id == "check_new_launches":
             sources = params.get("sources")
             send_slack = params.get("send_slack_alerts", True)
             summary = monitor_engine.run_scan(specific_sources=sources, send_slack=send_slack)

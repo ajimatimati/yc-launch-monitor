@@ -129,3 +129,37 @@ def test_pond_run_idempotency():
     assert resp1.status_code == 200
     assert resp2.status_code == 200
     assert resp1.json() == resp2.json()
+
+def test_pond_run_agent_standard():
+    body = {
+        "run_id": "run_agent_test_01",
+        "action_id": "run_agent",
+        "parameters": {"prompt": "Show early signals from YC S26"}
+    }
+    headers = {
+        "Authorization": f"Bearer {settings.POND_ACCESS_KEY}",
+        "X-Agent-Protocol-Version": "1.0"
+    }
+    resp = client.post("/runs", json=body, headers=headers)
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["status"] == "completed"
+    assert "usage" in data
+
+def test_pond_run_agent_fail_directive():
+    body = {
+        "run_id": "run_agent_fail_01",
+        "action_id": "run_agent",
+        "parameters": {"prompt": "fail"}
+    }
+    headers = {
+        "Authorization": f"Bearer {settings.POND_ACCESS_KEY}",
+        "X-Agent-Protocol-Version": "1.0"
+    }
+    resp = client.post("/runs", json=body, headers=headers)
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["status"] == "failed"
+    assert "error" in data
+    assert data["usage"]["quantity"] == 0
+

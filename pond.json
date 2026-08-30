@@ -46,6 +46,23 @@
   },
   "actions": [
     {
+      "id": "run_agent",
+      "name": "Run Agent",
+      "description": "Send any natural language query, search, or instruction to the YC & Speedrun Launch Radar.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The prompt or question to send to the Agent (e.g., 'show early signals', 'search fintech', 'check status').",
+            "minLength": 1
+          }
+        },
+        "required": ["prompt"],
+        "additionalProperties": false
+      }
+    },
+    {
       "id": "check_new_launches",
       "name": "Check New Launches",
       "description": "Executes an immediate incremental scan across all 4 sources and returns newly detected early signals and confirmed launches.",
