@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     # Pond Agent Protocol
     PORT: int = 8000
     HOST: str = "0.0.0.0"
-    POND_ACCESS_KEY: str = "CfcpIz66WqjCRe0D1jSXiFFALH36zZet"
+    POND_ACCESS_KEY: str = "kYmQRiFJfVDdzl0ESFa4TvghaNpSBUDR"
 
     # GTM Profile
     GTM_CONTACT_NAME: str = "Jayson Fung"

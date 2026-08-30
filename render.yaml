@@ -6,6 +6,6 @@ services:
     startCommand: uvicorn yc_launch_monitor.pond.server:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: POND_ACCESS_KEY
-        value: CfcpIz66WqjCRe0D1jSXiFFALH36zZet
+        value: kYmQRiFJfVDdzl0ESFa4TvghaNpSBUDR
       - key: POLL_INTERVAL_HOURS
         value: "8"
