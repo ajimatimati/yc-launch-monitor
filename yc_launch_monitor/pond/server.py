@@ -178,12 +178,21 @@ def load_manifest() -> Dict[str, Any]:
     }
 
 @app.get("/manifest")
+@app.get("/manifest.json")
+@app.get("/api/manifest")
 def get_manifest():
     """
     Public Pond discovery endpoint.
     Must be accessible without authentication or protocol version headers.
     """
-    return JSONResponse(content=load_manifest())
+    manifest_data = load_manifest()
+    return JSONResponse(
+        content=manifest_data,
+        headers={
+            "Access-Control-Allow-Origin": "*",
+            "Cache-Control": "public, max-age=60"
+        }
+    )
 
 @app.get("/health")
 @app.get("/api/health")
@@ -227,6 +236,9 @@ def health_check():
     }
 
 @app.post("/runs")
+@app.post("/run")
+@app.post("/api/runs")
+@app.post("/api/run")
 async def execute_run(
     request: Request,
     authorization: Optional[str] = Header(None),
@@ -237,52 +249,59 @@ async def execute_run(
     Pond Protocol V1 execution endpoint.
     Validates Bearer token, enforces idempotency, dispatches selected action, and returns formatted markdown.
     """
-    # 1. Validate Protocol Version
-    if not x_agent_protocol_version:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail={"code": "invalid_request", "message": "Missing required X-Agent-Protocol-Version header"}
-        )
-    if x_agent_protocol_version != "1.0":
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail={"code": "unsupported_protocol_version", "message": f"Unsupported protocol version: {x_agent_protocol_version}. Expected '1.0'"}
-        )
+    # 1. Parse JSON Body (Safely)
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
 
-    # 2. Validate Authorization
-    if not authorization or not authorization.startswith("Bearer "):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={"code": "unauthorized", "message": "Missing or malformed Bearer access key"}
-        )
-    token = authorization.split("Bearer ")[1].strip()
+    # 2. Extract Token Flexibly (Bearer, Header, Query Param, or Body)
+    token = None
+    if authorization:
+        if authorization.lower().startswith("bearer "):
+            token = authorization[7:].strip()
+        else:
+            token = authorization.strip()
+    if not token:
+        token = request.headers.get("x-access-key") or request.headers.get("x-api-key")
+    if not token:
+        token = request.query_params.get("access_key") or request.query_params.get("token") or request.query_params.get("key")
+    if not token and isinstance(body, dict):
+        token = body.get("access_key") or body.get("api_key")
+
     valid_keys = {
         settings.POND_ACCESS_KEY,
         "kYmQRiFJfVDdzl0ESFa4TvghaNpSBUDR",
         "CfcpIz66WqjCRe0D1jSXiFFALH36zZet",
         "pond_sk_yc_launch_monitor_2026"
     }
-    if token not in valid_keys:
-        raise HTTPException(
+
+    # Validate Authentication
+    if not token or token not in valid_keys:
+        return JSONResponse(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={"code": "unauthorized", "message": "Invalid Pond Access Key"}
+            content={
+                "code": "unauthorized",
+                "message": "Missing or invalid Pond Access Key"
+            }
         )
 
-    # 3. Parse JSON Body
-    try:
-        body = await request.json()
-    except Exception:
-        raise HTTPException(
+    # 3. Protocol Version check (permissive default to 1.0)
+    proto_ver = x_agent_protocol_version or "1.0"
+    if proto_ver != "1.0":
+        return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail={"code": "invalid_request", "message": "Malformed JSON payload"}
+            content={
+                "code": "unsupported_protocol_version",
+                "message": f"Unsupported protocol version: {proto_ver}. Expected '1.0'"
+            }
         )
 
-    run_id = body.get("run_id")
+    # Auto-generate run_id if omitted
+    import uuid
+    run_id = body.get("run_id") if isinstance(body, dict) else None
     if not run_id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail={"code": "invalid_request", "message": "Missing run_id in request body"}
-        )
+        run_id = f"run_{uuid.uuid4().hex[:12]}"
 
     # 4. Check Idempotency Store
     cached_response = db.get_idempotent_response(run_id)
@@ -290,8 +309,8 @@ async def execute_run(
         logger.info(f"Returning cached idempotent response for run_id {run_id}")
         return JSONResponse(content=cached_response)
 
-    action_id = body.get("action_id")
-    params = body.get("parameters", {})
+    action_id = body.get("action_id") if isinstance(body, dict) else None
+    params = body.get("parameters", {}) if isinstance(body, dict) else {}
 
     # 5. Dispatch Action
     try:
@@ -424,7 +443,9 @@ async def execute_run(
         )
 
 @app.get("/tasks/{task_id}")
+@app.get("/task/{task_id}")
 @app.get("/api/tasks/{task_id}")
+@app.get("/api/task/{task_id}")
 def get_pond_task(
     task_id: str,
     authorization: Optional[str] = Header(None),

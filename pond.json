@@ -4,7 +4,7 @@
   "agent_version": "1.0.0",
   "metadata": {
     "name": "YC & Speedrun Launch Monitor Agent",
-    "logo_url": "https://bookface-static.ycombinator.com/assets/ycdc/favicon-c8a914eeeba9fe6f7a863b35608b55aeedd7c1ff409c97b9ecb96b7a6c278d70.ico",
+    "logo_url": "https://raw.githubusercontent.com/ajimatimati/yc-launch-monitor/main/yc_launch_monitor/static/images/logo.png",
     "short_description": "Monitors YC Directory, Speedrun, X/Twitter, and LinkedIn for early founder launch signals & official batch additions with Slack alerts.",
     "description": "<p>A high-speed GTM pipeline intelligence agent. Continuously monitors Y Combinator and Speedrun startup launches across social channels and official directories. Specifically detects early founder announcements on X and LinkedIn before official directory publication.</p>",
     "category": "sales",
