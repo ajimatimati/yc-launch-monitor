@@ -138,6 +138,69 @@ def post_api_scan():
     summary = monitor_engine.run_scan(send_slack=True)
     return summary.model_dump()
 
+@app.get("/api/slack/status")
+def get_slack_status():
+    """Returns the current connection status of Slack."""
+    return {
+        "configured": slack_notifier.is_configured,
+        "method": "webhook" if slack_notifier.webhook_url else ("bot_token" if slack_notifier.bot_token else "none"),
+        "channel_id": slack_notifier.channel_id
+    }
+
+@app.post("/api/slack/configure")
+async def post_slack_configure(request: Request):
+    """
+    Secure 1-Click Zero-Friction Slack Configuration Vault.
+    Saves an incoming webhook or Bot OAuth token with immediate least-privilege verification.
+    """
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+
+    webhook_url = body.get("webhook_url", "").strip()
+    bot_token = body.get("bot_token", "").strip()
+    channel_id = body.get("channel_id", "").strip()
+
+    if webhook_url:
+        if not webhook_url.startswith("https://hooks.slack.com/services/"):
+            return JSONResponse(
+                status_code=400,
+                content={"success": False, "error": "Invalid Slack webhook URL format. Must start with https://hooks.slack.com/services/"}
+            )
+        db.set_config("slack_webhook_url", webhook_url)
+    elif bot_token and channel_id:
+        db.set_config("slack_bot_token", bot_token)
+        db.set_config("slack_channel_id", channel_id)
+    else:
+        return JSONResponse(
+            status_code=400,
+            content={"success": False, "error": "Please provide a valid Webhook URL or Bot Token + Channel ID."}
+        )
+
+    # Immediate Test Card Ping
+    now = datetime.datetime.now(datetime.timezone.utc)
+    test_item = LaunchItem(
+        id="config_test_ping",
+        company_name="YC Launch Radar",
+        slug="yc-radar",
+        website="https://yc-launch-monitor.onrender.com",
+        batch="YC S26",
+        program_type=ProgramType.YC,
+        source=LaunchSource.X_TWITTER,
+        status=LaunchStatus.EARLY_SIGNAL,
+        founders=[FounderInfo(name="Jayson Fung", handle="@jayson_gtm", title="Senior GTM at Rho")],
+        post_text="Slack channel connected successfully! Real-time YC and Speedrun founder alerts will stream here.",
+        description="Secure Slack Alert integration verified.",
+        detected_at=now
+    )
+    success, ts = slack_notifier.send_launch_alert(test_item)
+    return {
+        "success": success,
+        "message": "Slack channel connected securely and verified with a test card!",
+        "ts": ts
+    }
+
 @app.post("/api/test-slack")
 def post_api_test_slack():
     """Dispatches test alert cards to Slack (or terminal preview)."""

@@ -81,6 +81,15 @@ class DatabaseManager:
             );
             """)
 
+            # Table: app_config (key-value settings vault)
+            cursor.execute("""
+            CREATE TABLE IF NOT EXISTS app_config (
+                key TEXT PRIMARY KEY,
+                value TEXT NOT NULL,
+                updated_at TIMESTAMP NOT NULL
+            );
+            """)
+
             # Create Indexes for fast lookup & deduplication
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_launches_company ON launches(company_name);")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_launches_slug ON launches(slug);")
@@ -299,6 +308,26 @@ class DatabaseManager:
                 datetime.datetime.now(datetime.timezone.utc).isoformat()
             ))
             conn.commit()
+
+    def set_config(self, key: str, value: str):
+        """Sets a persistent configuration key-value pair."""
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+            INSERT OR REPLACE INTO app_config (key, value, updated_at)
+            VALUES (?, ?, ?)
+            """, (key, value, datetime.datetime.now(datetime.timezone.utc).isoformat()))
+            conn.commit()
+
+    def get_config(self, key: str, default: Optional[str] = None) -> Optional[str]:
+        """Gets a persistent configuration value."""
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT value FROM app_config WHERE key = ?", (key,))
+            row = cursor.fetchone()
+            if row:
+                return row["value"]
+            return default
 
     def _row_to_launch_item(self, row: sqlite3.Row) -> LaunchItem:
         founders_raw = json.loads(row["founders_json"]) if row["founders_json"] else []

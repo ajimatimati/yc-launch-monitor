@@ -21,9 +21,24 @@ class SlackNotifier:
         channel_id: Optional[str] = None,
         webhook_url: Optional[str] = None
     ):
-        self.bot_token = bot_token or settings.SLACK_BOT_TOKEN
-        self.channel_id = channel_id or settings.SLACK_CHANNEL_ID
-        self.webhook_url = webhook_url or settings.SLACK_WEBHOOK_URL
+        self._bot_token = bot_token
+        self._channel_id = channel_id
+        self._webhook_url = webhook_url
+
+    @property
+    def bot_token(self) -> Optional[str]:
+        from ..database import db
+        return self._bot_token or settings.SLACK_BOT_TOKEN or db.get_config("slack_bot_token")
+
+    @property
+    def channel_id(self) -> Optional[str]:
+        from ..database import db
+        return self._channel_id or settings.SLACK_CHANNEL_ID or db.get_config("slack_channel_id")
+
+    @property
+    def webhook_url(self) -> Optional[str]:
+        from ..database import db
+        return self._webhook_url or settings.SLACK_WEBHOOK_URL or db.get_config("slack_webhook_url")
 
     @property
     def is_configured(self) -> bool:
