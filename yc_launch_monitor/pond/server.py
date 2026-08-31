@@ -14,16 +14,31 @@ from ..database import db
 from ..engine import monitor_engine
 from ..slack.notifier import slack_notifier
 from ..models import LaunchStatus, LaunchItem, ProgramType, LaunchSource, FounderInfo
+from contextlib import asynccontextmanager
+from ..scheduler import scheduler
 
 logger = logging.getLogger(__name__)
 
 # Start timestamp for uptime calculation
 START_TIME = datetime.datetime.now(datetime.timezone.utc)
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """
+    Automated 24/7 background monitoring daemon lifecycle manager.
+    Runs persistently on an 8-hour continuous polling cycle without requiring manual dashboard clicks.
+    """
+    logger.info("Initializing 24/7 continuous background monitoring daemon (8-hour cadence)...")
+    scheduler.start(run_immediately=False)
+    yield
+    logger.info("Gracefully stopping background monitoring daemon...")
+    scheduler.stop()
+
 app = FastAPI(
     title="YC Launch Monitor: Pond Protocol V1 Agent and GTM Radar",
     description="Pond Agent Server for real-time YC and Speedrun launch tracking and Slack alerting.",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
 app.add_middleware(
