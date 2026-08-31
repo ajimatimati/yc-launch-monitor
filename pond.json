@@ -51,6 +51,7 @@
       "description": "Send any natural language query, search, or instruction to the YC & Speedrun Launch Radar.",
       "input_schema": {
         "type": "object",
+        "description": "Input parameters for querying and running instructions on the YC & Speedrun Launch Radar.",
         "properties": {
           "prompt": {
             "type": "string",
@@ -68,12 +69,14 @@
       "description": "Executes an immediate incremental scan across all 4 sources and returns newly detected early signals and confirmed launches.",
       "input_schema": {
         "type": "object",
+        "description": "Configuration parameters for scanning social feeds and directories for new launches.",
         "properties": {
           "sources": {
             "type": "array",
             "description": "Specific sources to scan (optional). If empty, all 4 sources are scanned.",
             "items": {
               "type": "string",
+              "description": "The source platform identifier to monitor.",
               "enum": ["yc_directory", "speedrun_directory", "x_twitter", "linkedin"]
             }
           },
@@ -92,6 +95,7 @@
       "description": "Searches the persistent database for companies, founders, or batches.",
       "input_schema": {
         "type": "object",
+        "description": "Parameters for querying companies, founders, or batches in the verified database.",
         "properties": {
           "query": {
             "type": "string",
@@ -100,7 +104,7 @@
           },
           "status_filter": {
             "type": "string",
-            "description": "Filter by status.",
+            "description": "Filter results by announcement status (all, early_signal, or confirmed).",
             "enum": ["all", "early_signal", "confirmed"]
           }
         },
@@ -114,6 +118,7 @@
       "description": "Retrieves current daemon uptime, total tracked companies, early detection count, and last scan timestamps.",
       "input_schema": {
         "type": "object",
+        "description": "Parameters for retrieving daemon uptime, tracking stats, and health metrics.",
         "properties": {},
         "required": [],
         "additionalProperties": false
