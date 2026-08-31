@@ -186,4 +186,28 @@ class TelegramNotifier:
         )
         return self.send_message(html)
 
+    def set_webhook(self, webhook_url: str) -> Tuple[bool, str]:
+        """Registers the public webhook URL with Telegram Bot API."""
+        if not self.bot_token:
+            return False, "Bot token missing."
+        url = f"https://api.telegram.org/bot{self.bot_token}/setWebhook"
+        try:
+            req_data = json.dumps({"url": webhook_url}).encode("utf-8")
+            req = urllib.request.Request(
+                url,
+                data=req_data,
+                headers={"Content-Type": "application/json"},
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                if data.get("ok"):
+                    logger.info(f"[TelegramNotifier] Webhook registered successfully: {webhook_url}")
+                    return True, "Webhook registered successfully."
+                return False, data.get("description", "Failed to set webhook.")
+        except Exception as e:
+            logger.error(f"[TelegramNotifier] setWebhook failed: {e}")
+            return False, str(e)
+
 telegram_notifier = TelegramNotifier()
+

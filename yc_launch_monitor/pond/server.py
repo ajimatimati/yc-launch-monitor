@@ -16,6 +16,7 @@ from ..slack.notifier import slack_notifier
 from ..models import LaunchStatus, LaunchItem, ProgramType, LaunchSource, FounderInfo
 from contextlib import asynccontextmanager
 from ..scheduler import scheduler
+from ..telegram.notifier import telegram_notifier
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +31,10 @@ async def lifespan(app: FastAPI):
     """
     logger.info("Initializing 24/7 continuous background monitoring daemon (8-hour cadence)...")
     scheduler.start(run_immediately=False)
+    try:
+        telegram_notifier.set_webhook("https://yc-launch-monitor.onrender.com/api/telegram/webhook")
+    except Exception as e:
+        logger.warning(f"Telegram webhook auto-registration notice: {e}")
     yield
     logger.info("Gracefully stopping background monitoring daemon...")
     scheduler.stop()
@@ -245,6 +250,22 @@ async def post_api_wallet_create(request: Request):
         "address": w.address,
         "message": "Secure local wallet created and saved in PBKDF2 encrypted vault."
     }
+
+from ..telegram.handler import telegram_handler
+
+@app.post("/api/telegram/webhook")
+async def post_telegram_webhook(request: Request):
+    """
+    Telegram Bot API Webhook Receiver.
+    Handles mobile phone commands (/start, /stats, /scan, /early, /mints, /bounties, /vault).
+    """
+    try:
+        body = await request.json()
+        telegram_handler.handle_update(body)
+        return {"ok": True}
+    except Exception as e:
+        logger.error(f"[TelegramWebhook] Error handling update: {e}")
+        return {"ok": False, "error": str(e)}
 
 @app.post("/api/test-telegram")
 def post_api_test_telegram():
