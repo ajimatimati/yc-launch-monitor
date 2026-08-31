@@ -201,6 +201,57 @@ async def post_slack_configure(request: Request):
         "ts": ts
     }
 
+from ..telegram.notifier import telegram_notifier
+from ..web3_vault.wallet_vault import wallet_vault
+from ..monitors.onchain_mints import onchain_mint_monitor
+from ..monitors.bounty_scout import bounty_scout_monitor
+
+@app.get("/api/bounties")
+def get_api_bounties():
+    """Returns active GitHub cash bounties."""
+    bounties = bounty_scout_monitor.scan_bounties(send_telegram=False)
+    return [b.to_dict() for b in bounties]
+
+@app.get("/api/onchain-mints")
+def get_api_onchain_mints():
+    """Returns active on-chain smart money mint opportunities."""
+    mints = onchain_mint_monitor.scan_mints(send_telegram=False)
+    return [m.to_dict() for m in mints]
+
+@app.get("/api/wallet/status")
+def get_api_wallet_status():
+    """Returns public addresses and count of controlled non-custodial local wallets."""
+    wallets = wallet_vault.list_public_wallets()
+    return {
+        "wallet_count": len(wallets),
+        "simulation_only": settings.SIMULATION_ONLY,
+        "default_chain": settings.DEFAULT_CHAIN,
+        "max_spend_eth": settings.MAX_TASK_SPEND_ETH,
+        "wallets": wallets
+    }
+
+@app.post("/api/wallet/create")
+async def post_api_wallet_create(request: Request):
+    """Creates a new secure non-custodial local wallet inside the encrypted vault."""
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    label = body.get("label", f"Alpha Execution Wallet #{len(wallet_vault.wallets) + 1}")
+    w = wallet_vault.create_wallet(label)
+    return {
+        "success": True,
+        "label": w.label,
+        "address": w.address,
+        "message": "Secure local wallet created and saved in PBKDF2 encrypted vault."
+    }
+
+@app.post("/api/test-telegram")
+def post_api_test_telegram():
+    """Dispatches a test verification alert to Telegram via @my_mintdash_execution_bot."""
+    success, msg = telegram_notifier.test_connection()
+    return {"success": success, "message": msg}
+
 @app.post("/api/test-slack")
 def post_api_test_slack():
     """Dispatches test alert cards to Slack (or terminal preview)."""
@@ -495,6 +546,43 @@ async def execute_run(
                     output_text += "\n"
             usage_quantity = len(results)
 
+        elif action_id == "hunt_bounties":
+            min_reward = float(params.get("min_reward_usd", 50.0))
+            bounties = bounty_scout_monitor.scan_bounties(send_telegram=False)
+            filtered = [b for b in bounties if b.reward_usd >= min_reward]
+            output_text = f"### 🎯 Active GitHub Cash Bounties ({len(filtered)} Found)\n\n"
+            for b in filtered:
+                output_text += f"- **[{b.repo}]** `{b.title}` — **${b.reward_usd:,.2f} USD**\n"
+                output_text += f"  - Tags: `{'`, `'.join(b.tech_tags)}`\n"
+                output_text += f"  - Summary: {b.summary}\n"
+                output_text += f"  - Link: {b.issue_url}\n\n"
+            usage_quantity = max(1, len(filtered))
+
+        elif action_id == "scan_onchain_alpha":
+            chain = params.get("chain", "base")
+            mints = onchain_mint_monitor.scan_mints(send_telegram=False)
+            output_text = f"### 💎 On-Chain Smart Money Mints ({len(mints)} Found on {chain.upper()})\n\n"
+            for m in mints:
+                output_text += f"- **{m.contract_name}** (`{m.chain.upper()}`)\n"
+                output_text += f"  - Address: `{m.contract_address}`\n"
+                output_text += f"  - Mint Price: {m.mint_price_eth} ETH (Gas: {m.simulated_gas_eth} ETH)\n"
+                output_text += f"  - Whales Active: {m.whale_wallets_active}\n"
+                output_text += f"  - Explorer: {m.etherscan_url}\n\n"
+            usage_quantity = max(1, len(mints))
+
+        elif action_id == "get_wallet_status":
+            wallets = wallet_vault.list_public_wallets()
+            output_text = f"### 🛡️ Web3 Non-Custodial Wallet Vault Status\n\n"
+            output_text += f"- **Controlled Wallets**: {len(wallets)}\n"
+            output_text += f"- **Simulation Mode**: {'🟢 Active (Zero Risk)' if settings.SIMULATION_ONLY else 'Live'}\n"
+            output_text += f"- **Default Chain**: `{settings.DEFAULT_CHAIN.upper()}`\n"
+            output_text += f"- **Max Task Spend Cap**: `{settings.MAX_TASK_SPEND_ETH} ETH`\n\n"
+            if wallets:
+                output_text += "#### Public Wallet Addresses:\n"
+                for w in wallets:
+                    output_text += f"- `{w['address']}` ({w['label']})\n"
+            usage_quantity = 1
+
         elif action_id == "get_monitor_status":
             stats = db.get_stats()
             uptime_min = int((datetime.datetime.now(datetime.timezone.utc) - START_TIME).total_seconds() / 60)
@@ -505,7 +593,7 @@ async def execute_run(
             output_text += f"- **✅ Confirmed Official Directory Listings**: {stats.confirmed_count}\n"
             output_text += f"- **Speedrun Companies**: {stats.speedrun_count}\n"
             output_text += f"- **YC Companies**: {stats.yc_count}\n"
-            output_text += f"- **Last Automated Scan**: {stats.last_scan_time or 'Just started'}\n"
+            output_text += f"- **Telegram MintDash Alerts**: {'🟢 Connected' if telegram_notifier.is_configured else 'Disabled'}\n"
             output_text += f"- **Slack Dispatching**: {'Enabled' if slack_notifier.is_configured else 'Dry Run'}\n"
             usage_quantity = 1
 

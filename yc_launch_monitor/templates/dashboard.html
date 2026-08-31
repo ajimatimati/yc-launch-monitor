@@ -91,27 +91,35 @@
                 </div>
 
                 <!-- Navigation Pills (With Active State Synchronization) -->
-                <nav class="hidden md:flex items-center gap-1.5 bg-[#F1F5F9] p-1 rounded-full border border-slate-200/70">
-                    <button onclick="setAppView('all')" id="nav-all" class="nav-pill flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-darkPill text-white shadow-sm transition-all">
+                <nav class="hidden md:flex items-center gap-1.5 bg-[#F1F5F9] p-1 rounded-full border border-slate-200/70 overflow-x-auto max-w-[580px] custom-scrollbar">
+                    <button onclick="setAppView('all')" id="nav-all" class="nav-pill flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-darkPill text-white shadow-sm transition-all whitespace-nowrap">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                         <span>Dashboard</span>
                     </button>
-                    <button onclick="setAppView('early')" id="nav-early" class="nav-pill flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all">
-                        <svg class="w-3.5 h-3.5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"/></svg>
+                    <button onclick="setAppView('early')" id="nav-early" class="nav-pill flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all whitespace-nowrap">
+                        <svg class="w-3.5 h-3.5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/></svg>
                         <span>Early Signals</span>
                     </button>
-                    <button onclick="setAppView('yc')" id="nav-yc" class="nav-pill flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all">
+                    <button onclick="setAppView('yc')" id="nav-yc" class="nav-pill flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all whitespace-nowrap">
                         <svg class="w-3.5 h-3.5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                         <span>YC Directory</span>
                     </button>
-                    <button onclick="setAppView('speedrun')" id="nav-speedrun" class="nav-pill flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all">
+                    <button onclick="setAppView('speedrun')" id="nav-speedrun" class="nav-pill flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all whitespace-nowrap">
                         <svg class="w-3.5 h-3.5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.63 8.41m5.96 5.96l-5.96-5.96m0 0a6 6 0 00-7.38 5.84h4.8"/></svg>
                         <span>Speedrun</span>
                     </button>
-                    <a href="/manifest" target="_blank" class="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-purple-600 hover:text-purple-800 transition-all">
-                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="11" width="18" height="10" rx="2" stroke-width="2"/><circle cx="12" cy="5" r="2" stroke-width="2"/><path stroke-width="2" d="M12 7v4M8 16h.01M16 16h.01"/></svg>
-                        <span>Pond Agent</span>
-                    </a>
+                    <button onclick="showSection('onchain')" id="nav-onchain" class="nav-pill flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all whitespace-nowrap">
+                        <svg class="w-3.5 h-3.5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        <span>💎 On-Chain Mints</span>
+                    </button>
+                    <button onclick="showSection('bounties')" id="nav-bounties" class="nav-pill flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all whitespace-nowrap">
+                        <svg class="w-3.5 h-3.5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>🎯 Bounties</span>
+                    </button>
+                    <button onclick="showSection('wallet')" id="nav-wallet" class="nav-pill flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all whitespace-nowrap">
+                        <svg class="w-3.5 h-3.5 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                        <span>🛡️ Safe Vault</span>
+                    </button>
                 </nav>
             </div>
 
@@ -182,9 +190,14 @@
                     <span>+ Run Scan</span>
                 </button>
 
+                <button onclick="sendTestTelegram()" id="btn-telegram-test" class="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-xs font-bold shadow-sm transition-all">
+                    <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                    <span>📱 Telegram Ping</span>
+                </button>
+
                 <button onclick="sendTestSlack()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-xs font-semibold shadow-sm transition-all">
                     <svg class="w-3.5 h-3.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-                    <span>Test Card</span>
+                    <span>Slack Card</span>
                 </button>
 
                 <div class="flex items-center gap-1.5 px-3 py-2 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-sm">
@@ -511,6 +524,105 @@
                         <tr>
                             <td colspan="6" class="py-10 text-center text-slate-400">Loading launches...</td>
                         </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 5. On-Chain Smart Money Mints Section -->
+        <div id="onchain-section" class="p-6 bg-white border-t border-[#EDF1F5] hidden">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                <div>
+                    <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                        <span class="text-blue-500">💎</span>
+                        <span>On-Chain Smart Money & Free Mints</span>
+                    </h3>
+                    <p class="text-xs text-slate-500">Live Base and Ethereum smart contract opportunities with zero-risk simulation</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold">
+                        🛡️ Simulation Active (0% Risk)
+                    </span>
+                    <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold">
+                        Max Cap: 0.01 ETH
+                    </span>
+                </div>
+            </div>
+            <div class="overflow-x-auto rounded-2xl border border-slate-200/70">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-[#F8FAFC] border-b border-slate-200/70 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                            <th class="py-3 px-5">Opportunity</th>
+                            <th class="py-3 px-3">Network</th>
+                            <th class="py-3 px-3">Mint Price</th>
+                            <th class="py-3 px-3">Estimated Gas</th>
+                            <th class="py-3 px-3">Smart Wallets</th>
+                            <th class="py-3 px-5 text-right">Explorer</th>
+                        </tr>
+                    </thead>
+                    <tbody id="onchain-tbody" class="divide-y divide-slate-100 text-xs">
+                        <tr><td colspan="6" class="py-8 text-center text-slate-400">Loading on-chain opportunities...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 6. GitHub Cash Bounties Section -->
+        <div id="bounties-section" class="p-6 bg-white border-t border-[#EDF1F5] hidden">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                <div>
+                    <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                        <span class="text-emerald-500">🎯</span>
+                        <span>Funded GitHub Cash Bounties ($50 to $1,500 USD)</span>
+                    </h3>
+                    <p class="text-xs text-slate-500">Active algorithmic issues on Algora.io and Polar.sh ready for triage</p>
+                </div>
+            </div>
+            <div class="overflow-x-auto rounded-2xl border border-slate-200/70">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-[#F8FAFC] border-b border-slate-200/70 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                            <th class="py-3 px-5">Repository & Issue</th>
+                            <th class="py-3 px-3">Cash Reward</th>
+                            <th class="py-3 px-5">Tech Stack</th>
+                            <th class="py-3 px-5">Summary</th>
+                            <th class="py-3 px-5 text-right">Claim</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bounties-tbody" class="divide-y divide-slate-100 text-xs">
+                        <tr><td colspan="5" class="py-8 text-center text-slate-400">Loading bounties...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 7. Web3 Safe Vault Section -->
+        <div id="wallet-section" class="p-6 bg-white border-t border-[#EDF1F5] hidden">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                <div>
+                    <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                        <span>🛡️</span>
+                        <span>Non-Custodial Multi-Wallet Vault</span>
+                    </h3>
+                    <p class="text-xs text-slate-500">Local PBKDF2 HMAC-SHA256 encrypted key vault for autonomous execution</p>
+                </div>
+                <button onclick="createNewSafeWallet()" class="flex items-center gap-1.5 px-4 py-2 rounded-full bg-darkPill hover:bg-slate-800 text-white text-xs font-bold shadow-sm transition-all">
+                    <span>+ Generate Safe Wallet</span>
+                </button>
+            </div>
+            <div class="overflow-x-auto rounded-2xl border border-slate-200/70">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-[#F8FAFC] border-b border-slate-200/70 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                            <th class="py-3 px-5">Wallet Label</th>
+                            <th class="py-3 px-5">Public Address</th>
+                            <th class="py-3 px-3">Network</th>
+                            <th class="py-3 px-3">Status</th>
+                            <th class="py-3 px-5 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="wallet-tbody" class="divide-y divide-slate-100 text-xs">
+                        <tr><td colspan="5" class="py-8 text-center text-slate-400">Loading wallet vault...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1040,6 +1152,142 @@
                 feedback.className = 'text-xs font-semibold text-red-500';
             } finally {
                 btn.disabled = false;
+            }
+        }
+
+        // Alpha Sections Switcher
+        function showSection(sec) {
+            document.querySelectorAll('.nav-pill').forEach(btn => {
+                btn.className = 'nav-pill flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all whitespace-nowrap';
+            });
+            const navBtn = document.getElementById(`nav-${sec}`);
+            if (navBtn) {
+                navBtn.className = 'nav-pill flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-darkPill text-white shadow-sm transition-all whitespace-nowrap';
+            }
+
+            document.getElementById('radar-section').classList.add('hidden');
+            document.getElementById('onchain-section').classList.add('hidden');
+            document.getElementById('bounties-section').classList.add('hidden');
+            document.getElementById('wallet-section').classList.add('hidden');
+
+            if (sec === 'onchain') {
+                document.getElementById('onchain-section').classList.remove('hidden');
+                fetchOnchainMints();
+                document.getElementById('onchain-section').scrollIntoView({ behavior: 'smooth' });
+            } else if (sec === 'bounties') {
+                document.getElementById('bounties-section').classList.remove('hidden');
+                fetchBounties();
+                document.getElementById('bounties-section').scrollIntoView({ behavior: 'smooth' });
+            } else if (sec === 'wallet') {
+                document.getElementById('wallet-section').classList.remove('hidden');
+                fetchWalletStatus();
+                document.getElementById('wallet-section').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                document.getElementById('radar-section').classList.remove('hidden');
+                setAppView(sec);
+                document.getElementById('radar-section').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        async function fetchOnchainMints() {
+            try {
+                const res = await fetch('/api/onchain-mints');
+                const mints = await res.json();
+                const tbody = document.getElementById('onchain-tbody');
+                if (!mints.length) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="py-8 text-center text-slate-400">No active mints found.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = mints.map(m => `
+                    <tr class="hover:bg-slate-50/80 transition-colors">
+                        <td class="py-3.5 px-5 font-bold text-slate-900">${m.contract_name}</td>
+                        <td class="py-3.5 px-3"><span class="px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold bg-blue-50 text-blue-700">${m.chain.toUpperCase()}</span></td>
+                        <td class="py-3.5 px-3 font-mono font-bold text-slate-800">${m.mint_price_eth.toFixed(4)} ETH</td>
+                        <td class="py-3.5 px-3 font-mono text-slate-500">${m.simulated_gas_eth.toFixed(4)} ETH</td>
+                        <td class="py-3.5 px-3 font-bold text-purple-600">${m.whale_wallets_active} Whales</td>
+                        <td class="py-3.5 px-5 text-right"><a href="${m.etherscan_url}" target="_blank" class="px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs">Explorer ↗</a></td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function fetchBounties() {
+            try {
+                const res = await fetch('/api/bounties');
+                const bounties = await res.json();
+                const tbody = document.getElementById('bounties-tbody');
+                if (!bounties.length) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-slate-400">No active bounties found.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = bounties.map(b => `
+                    <tr class="hover:bg-slate-50/80 transition-colors">
+                        <td class="py-3.5 px-5">
+                            <p class="font-bold text-slate-900">${b.title}</p>
+                            <p class="text-[10px] font-mono text-slate-400">${b.repo}</p>
+                        </td>
+                        <td class="py-3.5 px-3"><span class="px-2.5 py-1 rounded-full text-xs font-black bg-emerald-50 text-emerald-700 border border-emerald-200">$${b.reward_usd.toFixed(2)} USD</span></td>
+                        <td class="py-3.5 px-5"><div class="flex flex-wrap gap-1">${b.tech_tags.map(t => `<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-medium">${t}</span>`).join('')}</div></td>
+                        <td class="py-3.5 px-5 text-slate-600 max-w-xs truncate">${b.summary}</td>
+                        <td class="py-3.5 px-5 text-right"><a href="${b.issue_url}" target="_blank" class="px-3.5 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm">Claim ↗</a></td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function fetchWalletStatus() {
+            try {
+                const res = await fetch('/api/wallet/status');
+                const data = await res.json();
+                const tbody = document.getElementById('wallet-tbody');
+                if (!data.wallets.length) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-slate-400">No wallets in vault yet. Click "+ Generate Safe Wallet" above.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = data.wallets.map(w => `
+                    <tr class="hover:bg-slate-50/80 transition-colors">
+                        <td class="py-3.5 px-5 font-bold text-slate-900">${w.label}</td>
+                        <td class="py-3.5 px-5 font-mono text-slate-700">${w.address}</td>
+                        <td class="py-3.5 px-3"><span class="px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold bg-purple-50 text-purple-700">${data.default_chain.toUpperCase()}</span></td>
+                        <td class="py-3.5 px-3"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700">Encrypted Safe</span></td>
+                        <td class="py-3.5 px-5 text-right"><button onclick="navigator.clipboard.writeText('${w.address}'); showToast('Wallet address copied!');" class="px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs">Copy</button></td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function createNewSafeWallet() {
+            showToast('Generating new PBKDF2 encrypted local keypair...');
+            try {
+                const res = await fetch('/api/wallet/create', { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Safe local wallet created: ' + data.address.slice(0, 8) + '...');
+                    fetchWalletStatus();
+                }
+            } catch (err) {
+                showToast('Error: ' + err.message);
+            }
+        }
+
+        async function sendTestTelegram() {
+            showToast('Sending live test alert to Telegram @my_mintdash_execution_bot...');
+            try {
+                const res = await fetch('/api/test-telegram', { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Telegram alert delivered to chat 7899086191!');
+                } else {
+                    showToast('Telegram failed: ' + data.message);
+                }
+            } catch (err) {
+                showToast('Telegram error: ' + err.message);
             }
         }
 

@@ -123,6 +123,53 @@
         "required": [],
         "additionalProperties": false
       }
+    },
+    {
+      "id": "hunt_bounties",
+      "name": "Hunt GitHub Bounties",
+      "description": "Scans open-source GitHub repositories for active cash bounties ($50 to $1,500 USD) on Algora and Polar.",
+      "input_schema": {
+        "type": "object",
+        "description": "Parameters for filtering GitHub cash bounties by minimum reward.",
+        "properties": {
+          "min_reward_usd": {
+            "type": "number",
+            "description": "Minimum bounty payout amount in USD (default 50.0)."
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "scan_onchain_alpha",
+      "name": "Scan On-Chain Smart Money Mints",
+      "description": "Monitors Base and Ethereum mempools for smart money accumulation and free mint contract opportunities.",
+      "input_schema": {
+        "type": "object",
+        "description": "Parameters for filtering on-chain smart money mints.",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "description": "Network to scan (base, ethereum, arbitrum).",
+            "enum": ["base", "ethereum", "arbitrum"]
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "get_wallet_status",
+      "name": "Get Web3 Vault Status",
+      "description": "Retrieves the public addresses and status of controlled non-custodial local wallets.",
+      "input_schema": {
+        "type": "object",
+        "description": "Parameters for checking non-custodial wallet vault status.",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      }
     }
   ],
   "capabilities": {

@@ -12,6 +12,27 @@ class Settings(BaseSettings):
     SLACK_CHANNEL_ID: Optional[str] = None
     SLACK_WEBHOOK_URL: Optional[str] = None
 
+    # Telegram MintDash Configuration
+    TELEGRAM_BOT_TOKEN: str = "7740806969:AAG_zC8L6a3-b8t4BroNtnvMXN_MVW1BCl0"
+    TELEGRAM_CHAT_ID: str = "7899086191"
+
+    # Web3 & On-Chain Mint Settings (Zero-Risk Simulation Mode by default)
+    DEFAULT_CHAIN: str = "base"
+    MAX_TASK_SPEND_ETH: float = 0.01
+    MAX_FEE_GWEI: float = 30.0
+    PRIORITY_FEE_GWEI: float = 1.0
+    VAULT_FILE: str = str(BASE_DIR / "data" / "vault.json")
+    SIMULATION_ONLY: bool = True
+
+    # Multi-Chain RPCs
+    BASE_RPC_URLS: str = "https://mainnet.base.org,https://base.llamarpc.com"
+    ETHEREUM_RPC_URLS: str = "https://cloudflare-eth.com,https://eth.llamarpc.com"
+    ARBITRUM_RPC_URLS: str = "https://arb1.arbitrum.io/rpc"
+
+    # GitHub Bounty Scout
+    ENABLE_BOUNTY_SCOUT: bool = True
+    MIN_BOUNTY_USD: float = 50.0
+
     # Monitoring Settings
     POLL_INTERVAL_HOURS: int = 8
     TARGET_BATCHES: str = "S26,W26,F26,S25,SR006,SR007,SR005"
@@ -20,6 +41,7 @@ class Settings(BaseSettings):
     ENABLE_SPEEDRUN_DIRECTORY: bool = True
     ENABLE_X_TWITTER: bool = True
     ENABLE_LINKEDIN: bool = True
+    ENABLE_ONCHAIN_MINTS: bool = True
 
     # Social Media API Keys (Optional with built-in fallbacks)
     TWITTER_BEARER_TOKEN: Optional[str] = None
