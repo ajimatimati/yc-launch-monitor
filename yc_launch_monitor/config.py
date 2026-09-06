@@ -12,9 +12,9 @@ class Settings(BaseSettings):
     SLACK_CHANNEL_ID: Optional[str] = None
     SLACK_WEBHOOK_URL: Optional[str] = None
 
-    # Telegram MintDash Configuration
-    TELEGRAM_BOT_TOKEN: str = "7740806969:AAG_zC8L6a3-b8t4BroNtnvMXN_MVW1BCl0"
-    TELEGRAM_CHAT_ID: str = "7899086191"
+    # Telegram MintDash Configuration (injected via environment variables)
+    TELEGRAM_BOT_TOKEN: Optional[str] = None
+    TELEGRAM_CHAT_ID: Optional[str] = None
 
     # Web3 & On-Chain Mint Settings (Zero-Risk Simulation Mode by default)
     DEFAULT_CHAIN: str = "base"
@@ -33,8 +33,8 @@ class Settings(BaseSettings):
     ENABLE_BOUNTY_SCOUT: bool = True
     MIN_BOUNTY_USD: float = 50.0
 
-    # Monitoring Settings
-    POLL_INTERVAL_HOURS: int = 8
+    # Monitoring Settings (High-freshness 1-hour cadence)
+    POLL_INTERVAL_HOURS: int = 1
     TARGET_BATCHES: str = "S26,W26,F26,S25,SR006,SR007,SR005"
     
     ENABLE_YC_DIRECTORY: bool = True
@@ -50,10 +50,10 @@ class Settings(BaseSettings):
     # Database
     DATABASE_PATH: str = str(BASE_DIR / "yc_launches.db")
 
-    # Pond Agent Protocol
+    # Pond Agent Protocol (injected via environment variable)
     PORT: int = 8000
     HOST: str = "0.0.0.0"
-    POND_ACCESS_KEY: str = "kYmQRiFJfVDdzl0ESFa4TvghaNpSBUDR"
+    POND_ACCESS_KEY: Optional[str] = None
 
     # GTM Profile
     GTM_CONTACT_NAME: str = "Jayson Fung"

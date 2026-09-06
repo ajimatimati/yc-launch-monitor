@@ -30,7 +30,7 @@ async def lifespan(app: FastAPI):
     Runs persistently on an 8-hour continuous polling cycle without requiring manual dashboard clicks.
     """
     logger.info("Initializing 24/7 continuous background monitoring daemon (8-hour cadence)...")
-    scheduler.start(run_immediately=False)
+    scheduler.start(run_immediately=True)
     try:
         telegram_notifier.set_webhook("https://yc-launch-monitor.onrender.com/api/telegram/webhook")
     except Exception as e:
@@ -294,6 +294,37 @@ def post_api_test_slack():
     s, ts = slack_notifier.send_launch_alert(early_test)
     return {"success": s, "ts": ts}
 
+
+def verify_pond_authorization(
+    request: Request,
+    authorization: Optional[str] = None,
+    body: Optional[Dict[str, Any]] = None
+) -> bool:
+    """
+    Validates that the incoming request has a valid Pond Access Key.
+    Reads securely from environment variable or configured settings.
+    No secrets are hardcoded in source code.
+    """
+    expected = settings.POND_ACCESS_KEY or os.getenv("POND_ACCESS_KEY")
+    if not expected:
+        logger.warning("[Auth] POND_ACCESS_KEY is not configured in environment or settings.")
+        return False
+
+    token = None
+    if authorization:
+        if authorization.lower().startswith("bearer "):
+            token = authorization[7:].strip()
+        else:
+            token = authorization.strip()
+    if not token:
+        token = request.headers.get("x-access-key") or request.headers.get("x-api-key")
+    if not token:
+        token = request.query_params.get("access_key") or request.query_params.get("token") or request.query_params.get("key")
+    if not token and isinstance(body, dict):
+        token = body.get("access_key") or body.get("api_key")
+
+    return bool(token and token == expected)
+
 def load_manifest() -> Dict[str, Any]:
     """Loads the Pond Protocol V1 manifest."""
     manifest_path = Path(__file__).resolve().parent.parent.parent / "pond.json"
@@ -419,15 +450,8 @@ async def execute_run(
     if not token and isinstance(body, dict):
         token = body.get("access_key") or body.get("api_key")
 
-    valid_keys = {
-        settings.POND_ACCESS_KEY,
-        "kYmQRiFJfVDdzl0ESFa4TvghaNpSBUDR",
-        "CfcpIz66WqjCRe0D1jSXiFFALH36zZet",
-        "pond_sk_yc_launch_monitor_2026"
-    }
-
-    # Validate Authentication
-    if not token or token not in valid_keys:
+    # Validate Authentication strictly against configured environment key
+    if not verify_pond_authorization(request, authorization, body):
         return JSONResponse(
             status_code=status.HTTP_401_UNAUTHORIZED,
             content={
@@ -679,15 +703,28 @@ async def execute_run(
 @app.get("/task/{task_id}")
 @app.get("/api/tasks/{task_id}")
 @app.get("/api/task/{task_id}")
+@app.get("/runs/{task_id}")
+@app.get("/run/{task_id}")
+@app.get("/api/runs/{task_id}")
 def get_pond_task(
+    request: Request,
     task_id: str,
     authorization: Optional[str] = Header(None),
     x_agent_protocol_version: Optional[str] = Header(None, alias="X-Agent-Protocol-Version")
 ):
     """
-    Pond Protocol V1 Task Polling Endpoint.
-    Returns status and output for any probed task.
+    Pond Protocol V1 Task & Run Polling Endpoint.
+    Strictly enforces Bearer token authentication to protect task execution results.
     """
+    if not verify_pond_authorization(request, authorization):
+        return JSONResponse(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            content={
+                "code": "unauthorized",
+                "message": "Missing or invalid Pond Access Key"
+            }
+        )
+
     cached = db.get_idempotent_response(task_id)
     if cached:
         return JSONResponse(content=cached)
@@ -708,4 +745,25 @@ def get_pond_task(
             }
         }
     )
+
+@app.get("/tasks")
+@app.get("/api/tasks")
+def list_pond_tasks(
+    request: Request,
+    authorization: Optional[str] = Header(None)
+):
+    """
+    Returns available agent tasks / actions. Requires Pond authentication.
+    """
+    if not verify_pond_authorization(request, authorization):
+        return JSONResponse(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            content={
+                "code": "unauthorized",
+                "message": "Missing or invalid Pond Access Key"
+            }
+        )
+    m = load_manifest()
+    return JSONResponse(content={"tasks": m.get("actions", [])})
+
 

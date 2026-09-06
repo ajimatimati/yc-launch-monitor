@@ -86,3 +86,19 @@ def test_linkedin_early_signal_extraction():
     assert item.source == LaunchSource.LINKEDIN
     assert item.program_type == ProgramType.YC
     assert item.founders[0].name == "Alexei Romanov"
+
+def test_early_signal_links_are_valid():
+    """Verifies that early signal crawler returns items with valid, non-broken links."""
+    monitor = XTwitterMonitor()
+    items = monitor.scan(limit=10)
+    assert len(items) > 0
+    for itm in items:
+        assert itm.status == LaunchStatus.EARLY_SIGNAL
+        assert itm.post_url is not None
+        assert itm.post_url.startswith("http")
+        if itm.website:
+            assert itm.website.startswith("http")
+        # Ensure no synthetic placeholder domains
+        for forbidden in ["hyperscale.ai", "kallisto.bio", "synapseflow.dev", "aurapayments.io"]:
+            assert forbidden not in str(itm.website)
+            assert forbidden not in str(itm.post_url)

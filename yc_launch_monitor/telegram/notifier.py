@@ -34,7 +34,7 @@ class TelegramNotifier:
             self._bot_token
             or settings.TELEGRAM_BOT_TOKEN
             or db.get_config("telegram_bot_token")
-            or "7740806969:AAG_zC8L6a3-b8t4BroNtnvMXN_MVW1BCl0"
+            or ""
         )
 
     @property
@@ -44,7 +44,7 @@ class TelegramNotifier:
             self._chat_id
             or settings.TELEGRAM_CHAT_ID
             or db.get_config("telegram_chat_id")
-            or "7899086191"
+            or ""
         )
 
     @property

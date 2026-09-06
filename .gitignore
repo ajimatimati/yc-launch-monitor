@@ -27,3 +27,10 @@ htmlcov/
 .env
 *.db
 *.db-journal
+
+# Media & Temporary Scratch
+videos/
+*.mp4
+Untitled-1.html
+index.html
+

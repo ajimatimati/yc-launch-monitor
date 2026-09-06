@@ -40,12 +40,39 @@ def test_pond_health_check():
     assert "components" in data
     assert data["components"]["database"]["status"] == "up"
 
-def test_pond_task_endpoint():
+def test_pond_task_endpoint_unauthorized():
+    # Unauthenticated request must return 401
     resp = client.get("/tasks/task_12345")
+    assert resp.status_code == 401
+    assert resp.json().get("code") == "unauthorized"
+
+def test_pond_task_endpoint_authorized():
+    # Authenticated request must return 200 with result
+    headers = {"Authorization": f"Bearer {settings.POND_ACCESS_KEY}"}
+    resp = client.get("/tasks/task_12345", headers=headers)
     assert resp.status_code == 200
     data = resp.json()
     assert data.get("status") == "completed"
     assert data.get("task_id") == "task_12345"
+
+def test_pond_task_list_endpoint():
+    # Unauthorized returns 401
+    assert client.get("/tasks").status_code == 401
+    # Authorized returns 200 with task definitions
+    headers = {"Authorization": f"Bearer {settings.POND_ACCESS_KEY}"}
+    resp = client.get("/tasks", headers=headers)
+    assert resp.status_code == 200
+    assert "tasks" in resp.json()
+
+def test_monitoring_freshness_never_stale():
+    from yc_launch_monitor.database import db
+    import datetime
+    stats = db.get_stats()
+    assert stats.last_scan_time is not None
+    last_dt = datetime.datetime.fromisoformat(stats.last_scan_time)
+    now = datetime.datetime.now(datetime.timezone.utc)
+    # Must be fresh (less than 2 hours old, never 107 hours stale)
+    assert (now - last_dt).total_seconds() < 7200
 
 def test_pond_run_unauthorized():
     body = {
